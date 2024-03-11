@@ -1,0 +1,37 @@
+
+npm init -y
+
+npm i express
+
+npm i cookies-parser 
+
+npm i bcryptjs
+
+npm i mongoose
+
+npm i morgan 
+
+npm i nodemon -D
+
+
+seleccionado un texto, presiondo control + D y selecionando todos los textos a modificar se modifican todos
+
+
+para instalar react native 
+
+npm install -g expo-cli
+npx create-expo-app client
+expo init client
+cd client
+npx expo start
+
+biblioteca que usa fetch 
+npm i axios 
+init 
+npm i cors 
+
+usar hooks 
+npm i react-hook-form
+
+
+npm install @react-navigation/native @react-navigation/stack
