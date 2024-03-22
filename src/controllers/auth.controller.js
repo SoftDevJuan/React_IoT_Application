@@ -1,7 +1,24 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { creartoken } from "../libs/jwt.js";
-import movimientosModel from "../models/movimientos.model.js";
+
+
+
+
+export const getUsuarios = async (req, res) => {
+  try {
+    const usuarios = await User.find({}, 'username email rfid').limit(10); // Obtiene los usuarios con solo los campos username, email y rfid
+    if (!usuarios || usuarios.length === 0) {
+      return res.status(404).json({ message: "No se encontraron usuarios." });
+    }
+    res.status(200).json(usuarios);
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    res.status(500).json({ message: "Error interno del servidor." });
+  }
+};
+
+
 
 // registramos nuevo usuario
 export const register = async (req, res) => {
@@ -29,14 +46,8 @@ export const register = async (req, res) => {
   }
 }; // cierra register
 
-export const Movimientos  = async (req, res) => {
-    const movimientosFound = await movimientosModel.findOne();
 
-    if (!userFound)
-      return res.status(400).json({ message: "NO HAY MOVIMIENTOS" });
 
-    
-}; // cierra Movimientos 
 
 
 

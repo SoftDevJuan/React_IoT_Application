@@ -35,3 +35,11 @@ npm i react-hook-form
 
 
 npm install @react-navigation/native @react-navigation/stack
+
+
+PARA CREAR EL MENU DE OPCCIONES DE NAVEGACIÓN
+
+npm install @react-navigation/native
+expo install react-native-screens react-native-safe-area-context
+expo install react-native-gesture-handler react-native-reanimated
+npm install @react-navigation/drawer

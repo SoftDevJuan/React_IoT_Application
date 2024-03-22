@@ -12,26 +12,25 @@ import { mongoose } from "mongoose";
         type: String,
         required: true,
         trim: true,
-        unique: true,
-    },
-    password:{
-        type: String,
-        required: true,
         
     },
     rfid: {
         type: String,
         required: true,
         trim: true,
-        unique: true,
+        
 
     },
     puerta:{
-        type: String,
+        type: Number,
         required: true,
         trim: true,
-        unique: true,
-    }
+        
+    },
+    fecha: {
+        type: Date, // Cambiado a tipo Date para almacenar la fecha
+        default: Date.now, // Establecer la fecha actual por defecto
+    },
 },{versionKey : false,timestamps: true})
 
 export default mongoose.model('movimientos', movimientosSchema)
