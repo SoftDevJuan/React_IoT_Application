@@ -19,8 +19,6 @@ export const getUsuarios = async (req, res) => {
 };
 
 
-
-// registramos nuevo usuario
 export const register = async (req, res) => {
   const { username, email, password, rfid } = req.body;
   try {
@@ -42,12 +40,10 @@ export const register = async (req, res) => {
       rfid: userSave.rfid,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error en el registro:", error); // Imprimir el error en la consola del servidor
+    res.status(500).json({ message: "Error interno del servidor" });
   }
-}; // cierra register
-
-
-
+};
 
 
 

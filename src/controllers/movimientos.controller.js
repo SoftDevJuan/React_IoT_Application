@@ -1,6 +1,4 @@
 import MOVIMIENTOS from "../models/movimientos.model.js";
-import bcrypt from "bcryptjs";
-import { creartoken } from "../libs/jwt.js";
 import movimientosModel from "../models/movimientos.model.js";
 
 export const Movimientos  = async (req, res) => {
@@ -51,6 +49,7 @@ export const registerMovimiento = async (req, res) => {
       email: movSave.email,
       rfid: movSave.rfid,
     });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
