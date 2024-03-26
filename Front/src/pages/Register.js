@@ -23,6 +23,7 @@ function RegisterPages() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [puerta, setPuerta] = useState("");
   const [RFID, setRFID] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true); // Estado para controlar si se muestra o no la contraseña
 
@@ -40,8 +41,9 @@ function RegisterPages() {
         {
           username: username,
           email:email,
-          password:password,
+          // password:password,
           rfid: RFID,
+          puerta: puerta
         }
       );
 
@@ -50,17 +52,18 @@ function RegisterPages() {
       console.log("Nombre de usuario:", response.data.username);
       console.log("Correo electrónico:", response.data.email);
       console.log("RFID:", response.data.rfid);
+      console.log("Puerta:", response.data.puerta);
 
       setUsername("");
       setEmail("");
-      setPassword("");
+      // setPassword("");
       setRFID("");
+      setPuerta("");
 
       Alert.alert(
         "Registro exitoso",
         "¡Tu cuenta ha sido registrada con éxito!"
       );
-      navigation.navigate('Home');
     } catch (error) {
       console.error("Error al enviar datos al servidor:", error.message);
       Alert.alert(
@@ -89,8 +92,8 @@ function RegisterPages() {
           keyboardType="email-address"
           value={email}
         />
-        <Text style={styles.label}>Contraseña</Text>
-        <View style={styles.passwordInputContainer}>
+        {/* <Text style={styles.label}>Contraseña</Text> */}
+        {/* <View style={styles.passwordInputContainer}>
           <TextInput
             style={styles.passwordInput}
             placeholder="Contraseña"
@@ -99,10 +102,9 @@ function RegisterPages() {
             value={password}
           />
           <TouchableOpacity onPress={toggleSecureEntry} style={styles.toggleButton}>
-            {/* Utiliza Feather Icons para el ícono de ojo */}
             <Feather name={secureTextEntry ? "eye" : "eye-off"} size={24} color="black" />
           </TouchableOpacity>
-        </View>
+        </View> */}
         <Text style={styles.label}>Tarjeta</Text>
         <TextInput
           style={styles.input}
@@ -110,6 +112,14 @@ function RegisterPages() {
           onChangeText={setRFID}
           keyboardType="default"
           value={RFID}
+        />
+        <Text style={styles.label}>Puerta</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="puerta"
+          onChangeText={setPuerta}
+          keyboardType="numeric"
+          value={puerta}
         />
 
         <TouchableOpacity onPress={handleRegister} style={styles.btnRegistrar}>
@@ -126,11 +136,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   contenido: {
-    backgroundColor: "#ece6ea",
+    backgroundColor: "#e3e3e3",
     flex: 1,
     justifyContent: "flex-start", // Alinea el contenido al principio
     paddingHorizontal: 23,
-    padding: 100,
+    padding: 20,
   },
   label: {
     color: "#151517",
@@ -180,7 +190,7 @@ const styles = StyleSheet.create({
   },
   toggleButton: {
     padding: 10,
-    backgroundColor: "#122b43",
+    backgroundColor: "#ece6ea",
     borderRadius: 10,
     marginLeft: 10,
   },

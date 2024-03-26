@@ -15,11 +15,11 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Bienvenido</Text>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.buttonContainer}
         onPress={() => navigation.navigate('Register')}>
         <Text style={styles.buttonText}>Registrar</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         style={styles.buttonContainer}
         onPress={() => navigation.navigate('Login')}>

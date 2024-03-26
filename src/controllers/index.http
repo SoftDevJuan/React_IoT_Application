@@ -10,6 +10,34 @@ Content-Type: application/json
   
 }
 
+###
+
+POST http://localhost:3000/api/postMovimiento HTTP/1.1
+Content-Type: application/json
+
+{
+    
+ "username": "Test3",
+      "email":"Test3@gmail.com",
+      "rfid": "333-333-333",
+      "puerta": 1
+  
+}
+
+POST http://localhost:3000/api/postMovimiento HTTP/1.1
+Content-Type: application/json
+
+{
+    
+ "username": "Test3",
+      "email":"Test3@gmail.com",
+      "rfid": "333-333-333",
+      "puerta": 1
+  
+}
+
+
+
 
 ### GET DE TODOS LOS COMPONENTES
 GET  http://localhost:3000/api/actuadores HTTP/1.1

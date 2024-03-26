@@ -6,7 +6,6 @@ import { mongoose } from "mongoose";
     username:{
         type: String,
         required: true,
-        trim: true,
     },
     email:{
         type: String,
@@ -16,7 +15,6 @@ import { mongoose } from "mongoose";
     },
     password:{
         type: String,
-        required: true,
         
     },
     rfid: {
@@ -25,7 +23,13 @@ import { mongoose } from "mongoose";
         trim: true,
         unique: true,
 
+    }, 
+    puerta: {
+        type: Number,
+        required: true,
+        
     }
+
 },{versionKey : false,timestamps: true})
 
 export default mongoose.model('usuarios', userSchema)

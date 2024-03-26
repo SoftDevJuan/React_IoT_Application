@@ -28,6 +28,10 @@ const LoginForm = () => {
     })
       .then(response => response.json())
       .then(data => {
+        console.log(email)
+        console.log(password)
+
+
         // Verificar la respuesta de la API
         if (data.id) {
         setEmail("");

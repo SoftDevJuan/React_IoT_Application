@@ -20,15 +20,17 @@ export const getUsuarios = async (req, res) => {
 
 
 export const register = async (req, res) => {
-  const { username, email, password, rfid } = req.body;
+  const { username, email, rfid, puerta } = req.body;
   try {
-    const passwordHash = await bcrypt.hash(password, 10);
+    //  const passwordHash = await bcrypt.hash(password, 10);
     const newUser = new User({
       username,
       email,
-      password: passwordHash,
+      // password: passwordHash,
       rfid,
+      puerta
     });
+    
     const userSave = await newUser.save();
     const token = await creartoken({ id: userSave._id });
 
@@ -38,12 +40,41 @@ export const register = async (req, res) => {
       username: userSave.username,
       email: userSave.email,
       rfid: userSave.rfid,
+      puerta: userSave.puerta
     });
   } catch (error) {
     console.error("Error en el registro:", error); // Imprimir el error en la consola del servidor
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
+
+// export const register = async (req, res) => {
+//   const { username, email, password, rfid, puerta } = req.body;
+//   try {
+//      const passwordHash = await bcrypt.hash(password, 10);
+//     const newUser = new User({
+//       username,
+//       email,
+//       password: passwordHash,
+//       rfid,
+//       puerta
+//     });
+//     const userSave = await newUser.save();
+//     const token = await creartoken({ id: userSave._id });
+
+//     res.cookie("token", token);
+//     res.json({
+//       id: userSave._id,
+//       username: userSave.username,
+//       email: userSave.email,
+//       rfid: userSave.rfid,
+//       puerta: userSave.puerta
+//     });
+//   } catch (error) {
+//     console.error("Error en el registro:", error); // Imprimir el error en la consola del servidor
+//     res.status(500).json({ message: "Error interno del servidor" });
+//   }
+// };
 
 
 

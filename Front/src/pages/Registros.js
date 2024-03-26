@@ -1,89 +1,89 @@
 import React, { useState, useEffect } from "react";
-
 import {
   View,
-  TextInput,
-  StyleSheet,
-  Alert,
-  TouchableOpacity,
   Text,
-  Image,
-  ScrollView,
   FlatList,
+  StyleSheet,
   Animated,
+  ScrollView,
 } from "react-native";
 import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
 
 function Registros() {
-  const navigation = useNavigation();
   const [movimientos, setMovimientos] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
-  const [fadeAnim] = useState(new Animated.Value(0));
+
+  const [fadeAnimMovimientos] = useState(new Animated.Value(0));
+  const [fadeAnimUsuarios] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    // Función para obtener los últimos movimientos al cargar el componente
-    const fetchMovimientos = async () => {
-      try {
-        const response = await axios.get(
-          "http://192.168.1.8:3000/api/getMovimientos"
-        );
-        setMovimientos(response.data);
-        // Realizar animación fade in
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }).start();
-      } catch (error) {
-        console.error("Error al obtener movimientos:", error);
-      }
-    };
+    const intervalId = setInterval(() => {
+      fetchMovimientos();
+      fetchUsuarios();
+    }, 2000); 
 
-    const fetchUsuarios = async () => {
-      try {
-        const response = await axios.get(
-
-          "http://192.168.1.8:3000/api/getUsuarios"
-        );
-        setUsuarios(response.data);
-      } catch (error) {
-        console.error("Error al obtener usuarios:", error);
-      }
-    };
-
-    fetchMovimientos();
-    fetchUsuarios();
-
+    // Limpio el intervalo cuando el componente se desmonta
+    return () => clearInterval(intervalId);
   }, []);
 
+  const fetchMovimientos = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.1.8:3000/api/getMovimientos"
+      );
+      setMovimientos(response.data);
+      Animated.timing(fadeAnimMovimientos, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
+    } catch (error) {
+      console.error("Error al obtener movimientos:", error);
+    }
+  };
+
+  const fetchUsuarios = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.1.8:3000/api/getUsuarios"
+      );
+      setUsuarios(response.data);
+      Animated.timing(fadeAnimUsuarios, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
+    } catch (error) {
+      console.error("Error al obtener usuarios:", error);
+    }
+  };
+
   const renderMovimientoItem = ({ item }) => {
-    // Obtener la fecha en formato Date
     const fecha = new Date(item.fecha);
-    // Obtener los componentes de la fecha
     const dia = fecha.getDate();
-    const mes = fecha.getMonth() + 1; // El mes es devuelto de 0 a 11, por lo que se le suma 1
+    const mes = fecha.getMonth() + 1;
     const anio = fecha.getFullYear();
     const hora = fecha.getHours();
     const minutos = fecha.getMinutes();
-    // Crear la cadena de texto formateada
     const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
-  
+
     return (
-      <Animated.View style={[styles.row, { opacity: fadeAnim }]}>
-        <Text>{item.username}</Text>
-        <Text>{fechaFormateada}</Text> 
-        <Text>{item.puerta}</Text>
+      <Animated.View style={[styles.row, { opacity: fadeAnimMovimientos }]}>
+        <Text style={styles.dataText}>{item.username}</Text>
+        <Text style={styles.dataText}>{fechaFormateada}</Text> 
+        <Text style={styles.dataText}>{item.puerta}</Text>
       </Animated.View>
     );
   };
+
   const renderUsuarioItem = ({ item }) => (
-    <Animated.View style={[styles.row, { opacity: fadeAnim }]}>
-      <Text>{item.username}</Text>
-      <Text>{item.email}</Text>
-      <Text>{item.rfid}</Text>
+    <Animated.View style={[styles.row, { opacity: fadeAnimUsuarios }]}>
+      <Text style={styles.dataText}>{item.username}</Text>
+      <Text style={styles.dataText}>{item.email}</Text>
+      <Text style={styles.dataText}>{item.rfid}</Text>
     </Animated.View>
   );
+
   const renderUsuarioHeader = () => (
     <View style={styles.header}>
       <Text style={styles.headerText}>Nombre</Text>
@@ -91,56 +91,52 @@ function Registros() {
       <Text style={styles.headerText}>RFID</Text>
     </View>
   );
+
   const renderMovimientoHeader = () => (
     <View style={styles.header}>
       <Text style={styles.headerText}>Nombre</Text>
-      <Text style={styles.headerText}>fecha</Text>
+      <Text style={styles.headerText}>Fecha</Text>
       <Text style={styles.headerText}>Puerta</Text>
     </View>
   );
 
- 
-
   return (
+    <ScrollView >
     <View style={styles.contenido}>
-
       <View style={styles.listContainer}>
-      <Text style={styles.titulo}>Últimos Movimientos</Text>
-      {renderMovimientoHeader()}
-      <FlatList
-        data={movimientos}
-        renderItem={renderMovimientoItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    </View>
-    
+        <Text style={styles.titulo}>Últimos Movimientos</Text>
+        {renderMovimientoHeader()}
+        <FlatList
+          data={movimientos}
+          renderItem={renderMovimientoItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
       <View style={styles.listContainer}>
-      <Text style={styles.titulo}>Usuarios Registrados</Text>
-      {renderUsuarioHeader()}
-      <FlatList
-        data={usuarios}
-        renderItem={renderUsuarioItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
+        <Text style={styles.titulo}>Usuarios Registrados</Text>
+        {renderUsuarioHeader()}
+        <FlatList
+          data={usuarios}
+          renderItem={renderUsuarioItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
     </View>
-
-    </View>
+     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    backgroundColor: "#e3e3e3",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-  },
+  
+  
   contenido: {
     backgroundColor: "#e3e3e3",
     flex: 1,
     justifyContent: "flex-start",
     paddingHorizontal: 20,
-    paddingTop: 0, // Cambiado de 30 a 0
+    paddingTop: 0,
+    paddingBottom:30
+
   },
   header: {
     flexDirection: "row",
@@ -149,48 +145,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   headerText: {
-    fontWeight: "bold",
-  },
-  label: {
-    color: "#0d1323",
-    marginBottom: 5,
-    marginTop: 15,
-    marginLeft: 20,
-    marginLeft: 20,
-    fontSize: 30,
-    fontWeight: "600",
+    fontWeight: "900",
     textAlign: "center",
-  },
-  input: {
-    backgroundColor: "#85899d",
-    padding: 15,
-    borderRadius: 10,
-    color: "#ffffff",
+    fontSize: 15,
     marginBottom: 10,
-    marginTop: 10,
-    marginLeft: 15,
-    marginLeft: 15,
-    fontSize: 20,
-    textAlign: "center",
-  },
-  btnRegistrar: {
-    textAlign: "center",
-    fontSize: 24,
-    color: "#f5b202",
-    backgroundColor: "#485f69",
-    borderRadius: 10,
-    marginTop: 20,
-    marginHorizontal: 10,
-    marginLeft: 80,
-    marginRight: 80,
-    marginBottom: 15,
-    padding: 8,
-    textTransform: "uppercase",
   },
   titulo: {
-    textAlign:'center',
+    textAlign: "center",
     fontSize: 30,
     marginBottom: 30,
+    marginTop: 30,
     color: "#0c1c21",
     fontWeight: "900",
   },
@@ -202,14 +166,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#fff",
     borderRadius: 5,
-    elevation: 2, // Elevación para sombra (Android)
-    shadowColor: "#000", // Color de sombra (iOS)
+    elevation: 2,
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+  },
+  dataText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+    textAlign: "center",
   },
 });
 
