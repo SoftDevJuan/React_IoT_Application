@@ -37,7 +37,7 @@ function RegisterPages() {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.8:3000/api/register",
+        "http://192.168.1.12:3000/api/register",
         {
           username: username,
           email:email,
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   contenido: {
-    backgroundColor: "#e3e3e3",
+    backgroundColor: "#9eb8b7",
     flex: 1,
     justifyContent: "flex-start", // Alinea el contenido al principio
     paddingHorizontal: 23,

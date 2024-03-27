@@ -3,7 +3,6 @@ import { mongoose } from "mongoose"
 const ComponenteSchema= new mongoose.Schema({
     componente_id: {
         type: String,
-        unique: true,
         require: true
     },
     valor:{
@@ -12,9 +11,11 @@ const ComponenteSchema= new mongoose.Schema({
     tipo:{
         type: String,
 
+    },
+    puerta:{
+        type: Number
     }
 }, { timestamps:true, versionKey: false })
 
-ComponenteSchema.index({componente_id: 1}, {unique: true})
 
 export default  mongoose.model("Componente", ComponenteSchema)

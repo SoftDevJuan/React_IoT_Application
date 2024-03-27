@@ -4,9 +4,10 @@ Content-Type: application/json
 
 {
     
-  "componente_id": "SERVO-MOTOR",
+  "componente_id": "BUZZER",
   "valor": true,
-  "tipo": "actuador"
+  "tipo": "actuador",
+  "puerta": 3
   
 }
 
@@ -43,7 +44,7 @@ Content-Type: application/json
 GET  http://localhost:3000/api/actuadores HTTP/1.1
 
 ### GET DE UN COMPONENTE EN ESPECIFICO CON SU ID
-GET  http://localhost:3000/api/actuadores/65f88ab4acc47d14279c0980 HTTP/1.1
+GET  http://localhost:3000/api/actuadores/660357cd0857750eec6c4113 HTTP/1.1
 
 ### ACTUALIZAR UN COMPONENTE CON SU ID
 PUT http://localhost:3000/api/actuadores/65ff85d16bebdfad691d7b9e HTTP/1.1

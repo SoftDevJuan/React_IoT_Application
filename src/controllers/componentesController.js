@@ -6,8 +6,14 @@ export const getActuadorById = (req, res) => {
   const { id } = req.params;
   ComponenteModel
     .findById(id)
-    .then((Actuador) => res.json(Actuador))
-    .catch((error) => res.json({ message: error }));
+    .then((componente) => {
+      if (!componente) {
+        return res.status(404).json({ message: 'Componente no encontrado' });
+      }
+      res.setHeader('Content-Type', 'application/json');
+      res.json(componente);
+    })
+    .catch((error) => res.status(500).json({ message: `Error: ${error.message}` }));
 };
 
 // Función para obtener todos los actuadores
