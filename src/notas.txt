@@ -3,6 +3,8 @@ npm init -y
 
 npm i express
 
+npm install dotenv
+
 npm i cookies-parser 
 
 npm i bcryptjs

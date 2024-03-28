@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  Animated,
-  ScrollView,
-} from "react-native";
+import { View, Text, FlatList, StyleSheet, Animated } from "react-native";
 import axios from "axios";
 
 function Registros() {
@@ -20,7 +13,7 @@ function Registros() {
     const intervalId = setInterval(() => {
       fetchMovimientos();
       fetchUsuarios();
-    }, 2000); 
+    }, 2000);
 
     // Limpio el intervalo cuando el componente se desmonta
     return () => clearInterval(intervalId);
@@ -70,7 +63,7 @@ function Registros() {
     return (
       <Animated.View style={[styles.row, { opacity: fadeAnimMovimientos }]}>
         <Text style={styles.dataText}>{item.username}</Text>
-        <Text style={styles.dataText}>{fechaFormateada}</Text> 
+        <Text style={styles.dataText}>{fechaFormateada}</Text>
         <Text style={styles.dataText}>{item.puerta}</Text>
       </Animated.View>
     );
@@ -101,8 +94,7 @@ function Registros() {
   );
 
   return (
-    <ScrollView >
-    <View style={styles.contenido}>
+    <View style={styles.container}>
       <View style={styles.listContainer}>
         <Text style={styles.titulo}>Últimos Movimientos</Text>
         {renderMovimientoHeader()}
@@ -122,21 +114,19 @@ function Registros() {
         />
       </View>
     </View>
-     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  
-  
-  contenido: {
-    backgroundColor: "#9eb8b7",
+  container: {
     flex: 1,
-    justifyContent: "flex-start",
+    backgroundColor: "#9eb8b7",
+    paddingVertical: 10,
+  },
+  listContainer: {
+    flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 0,
-    paddingBottom:30
-
+    marginBottom:5,
   },
   header: {
     flexDirection: "row",
@@ -153,8 +143,8 @@ const styles = StyleSheet.create({
   titulo: {
     textAlign: "center",
     fontSize: 30,
-    marginBottom: 30,
-    marginTop: 30,
+    marginBottom: 10,
+    marginTop: 10,
     color: "#0c1c21",
     fontWeight: "900",
   },
