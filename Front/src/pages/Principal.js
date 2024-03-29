@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {useNavigation} from '@react-navigation/native';
-import { BackHandler } from 'react-native';
+
 import Registros from './Registros';
 import Dispositivo from './Dispositivo';
 import RegisterPages from './Register';
@@ -11,6 +11,7 @@ const Menu = createDrawerNavigator();
 
 function Principal() {
 
+    Navigation= useNavigation();
 
 
     const HandleLogout = () => {

@@ -120,7 +120,7 @@ function Registros() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#9eb8b7",
+    backgroundColor: "#c8cbd1",
     paddingVertical: 10,
   },
   listContainer: {

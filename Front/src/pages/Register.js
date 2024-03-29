@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   contenido: {
-    backgroundColor: "#9eb8b7",
+    backgroundColor: "#c8cbd1",
     flex: 1,
     justifyContent: "flex-start", // Alinea el contenido al principio
     paddingHorizontal: 23,
@@ -152,11 +152,12 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   input: {
-    backgroundColor: "#959ac0",
+    backgroundColor: "#f0e9d8",
     padding: 15,
     borderRadius: 10,
-    color: "#0d1323",
+    color: "#000000",
     marginBottom: 10,
+    textAlign:"center"
   },
   btnRegistrar: {
     alignItems: "center",
@@ -173,7 +174,8 @@ const styles = StyleSheet.create({
     color: "#ebd7be",
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: 25,
+    fontSize: 23,
+    textTransform:"uppercase"
   },
   passwordInputContainer: {
     flexDirection: "row",

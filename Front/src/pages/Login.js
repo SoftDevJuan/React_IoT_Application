@@ -78,7 +78,7 @@ const LoginForm = () => {
 
 const styles = StyleSheet.create({
   contenido: {
-    backgroundColor: '#9eb8b7',
+    backgroundColor: '#c8cbd1',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
 
   },
   input: {
-    backgroundColor: '#959ac0',
+    backgroundColor: '#f0e9d8',
     padding: 15,
     borderRadius: 10,
     color: '#0d1323',
@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
     color: '#ebd7be',
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize:25,
+    fontSize:20,
+    textTransform:"uppercase"
   },
 });
 

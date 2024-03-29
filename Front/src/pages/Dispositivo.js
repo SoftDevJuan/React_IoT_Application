@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Alert
 } from "react-native";
 
 const Dispositivo = () => {
@@ -27,9 +28,10 @@ const Dispositivo = () => {
       const response = await fetch(url, requestOptions);
       const data = await response.json();
       console.log("Respuesta de la API:", data);
+      Alert.alert('ALARMA ENCENDIDA');
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
-    }
+     }
   };
 
   const apagarAlarma = async (id) => {
@@ -48,6 +50,7 @@ const Dispositivo = () => {
       const response = await fetch(url, requestOptions);
       const data = await response.json();
       console.log("Respuesta de la API:", data);
+      Alert.alert('ALARMA APAGADA');
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
     }
@@ -70,6 +73,7 @@ const Dispositivo = () => {
       const response = await fetch(url, requestOptions);
       const data = await response.json();
       console.log("Respuesta de la API:", data);
+      Alert.alert('PUERTA ABIERTA');
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
     }
@@ -91,6 +95,8 @@ const Dispositivo = () => {
       const response = await fetch(url, requestOptions);
       const data = await response.json();
       console.log("Respuesta de la API:", data);
+      Alert.alert('PUERTA CERRADA');
+
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
     }
@@ -100,6 +106,7 @@ const Dispositivo = () => {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.doorContainer}>
+
           {/* Contenedor de Puerta 1 */}
           <View style={styles.doorWrapper}>
             <View style={styles.doorSection}>
@@ -210,6 +217,7 @@ const Dispositivo = () => {
               </View>
             </View>
           </View>
+
         </View>
       </View>
     </ScrollView>
@@ -221,7 +229,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 20,
-    backgroundColor: "#9eb8b7",
+    backgroundColor: "#c8cbd1",
   },
   alarmContainer: {
     borderWidth: 5,
@@ -241,7 +249,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderWidth: 5,
     borderRadius: 15,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#e7f0e6",
   },
   doorSection: {
     borderColor: "gray",
@@ -269,7 +277,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#ebd7be",
     textAlign: "center",
+    textTransform:"uppercase"
   },
+
+ 
 });
 
 export default Dispositivo;

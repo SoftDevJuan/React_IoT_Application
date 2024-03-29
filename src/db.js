@@ -12,7 +12,7 @@ export const connectDB = async () => {
     try {
 
         const connectionString = `mongodb+srv://${USER_NAME}:${PASSWORD}@${CLUSTER_NAME}.fc824vg.mongodb.net/${DB_NAME}`;
-        console.log("Cadena de conexión:", connectionString);
+        // console.log("Cadena de conexión:", connectionString);
         await mongoose.connect(connectionString);
          console.log(`conectado a la bd ${DB_NAME}`);
         
