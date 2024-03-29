@@ -15,10 +15,6 @@ npm i morgan
 
 npm i nodemon -D
 
-
-seleccionado un texto, presiondo control + D y selecionando todos los textos a modificar se modifican todos
-
-
 para instalar react native 
 
 npm install -g expo-cli
