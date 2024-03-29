@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     
-  "componente_id": "BUZZER",
+  "componente_id": "PUERTA",
   "valor": true,
   "tipo": "actuador",
   "puerta": 3

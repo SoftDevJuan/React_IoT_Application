@@ -9,6 +9,8 @@ import {
 
 const Dispositivo = () => {
   
+
+  // CONTROLAR LA ALARMA 
   const encenderAlarma = async (id) => {
     let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
 
@@ -51,6 +53,49 @@ const Dispositivo = () => {
     }
   };
 
+  // CONTROLAR EL SERVO MOTOR 
+  const abrirPuerta = async (id) => {
+    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
+
+    // Configura la solicitud para encender la alarma
+    let requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ valor: true }), // Envía el valor true como JSON para encender la alarma
+    };
+
+    try {
+      const response = await fetch(url, requestOptions);
+      const data = await response.json();
+      console.log("Respuesta de la API:", data);
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+    }
+  };
+
+  const cerrarPuerta = async (id) => {
+    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
+
+    // Configura la solicitud para apagar la alarma
+    let requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ valor: false }), // Envía el valor false como JSON para apagar la alarma
+    };
+
+    try {
+      const response = await fetch(url, requestOptions);
+      const data = await response.json();
+      console.log("Respuesta de la API:", data);
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+    }
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -63,27 +108,28 @@ const Dispositivo = () => {
                 <Text style={styles.sectionTitle}>Alarma</Text>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => apagarAlarma("660357c90857750eec6c410d")}
+                  onPress={() => apagarAlarma("6606ebf1d2ae5af273d9837d")}
                 >
                   <Text style={styles.buttonText}>Apagar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => encenderAlarma("660357c90857750eec6c410d")}
+                  onPress={() => encenderAlarma("6606ebf1d2ae5af273d9837d")}
                 >
                   <Text style={styles.buttonText}>Encender</Text>
                 </TouchableOpacity>
               </View>
+              
               <View style={styles.alarmContainer}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => togglePuerta("Puerta 1", "Abrir")}
+                  onPress={() => abrirPuerta("6606ec65d2ae5af273d98383")}
                 >
                   <Text style={styles.buttonText}>Abrir</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => togglePuerta("Puerta 1", "Cerrar")}
+                  onPress={() => cerrarPuerta("6606ec65d2ae5af273d98383")}
                 >
                   <Text style={styles.buttonText}>Cerrar</Text>
                 </TouchableOpacity>
@@ -99,27 +145,28 @@ const Dispositivo = () => {
                 <Text style={styles.sectionTitle}>Alarma</Text>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => apagarAlarma("660357cd0857750eec6c4113")}
+                  onPress={() => apagarAlarma("6606ec43d2ae5af273d9837f")}
                 >
                   <Text style={styles.buttonText}>Apagar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => encenderAlarma("660357cd0857750eec6c4113")}
+                  onPress={() => encenderAlarma("6606ec43d2ae5af273d9837f")}
                 >
                   <Text style={styles.buttonText}>Encender</Text>
                 </TouchableOpacity>
               </View>
+
               <View style={styles.alarmContainer}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => togglePuerta("Puerta 2", "Abrir")}
+                  onPress={() => abrirPuerta("6606ec6ad2ae5af273d98385")}
                 >
                   <Text style={styles.buttonText}>Abrir</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => togglePuerta("Puerta 2", "Cerrar")}
+                  onPress={() => cerrarPuerta("6606ec6ad2ae5af273d98385")}
                 >
                   <Text style={styles.buttonText}>Cerrar</Text>
                 </TouchableOpacity>
@@ -135,13 +182,13 @@ const Dispositivo = () => {
                 <Text style={styles.sectionTitle}>Alarma</Text>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => apagarAlarma("660357d10857750eec6c4119")}
+                  onPress={() => apagarAlarma("6606ec4bd2ae5af273d98381")}
                 >
                   <Text style={styles.buttonText}>Apagar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => encenderAlarma("660357d10857750eec6c4119")}
+                  onPress={() => encenderAlarma("6606ec4bd2ae5af273d98381")}
                 >
                   <Text style={styles.buttonText}>Encender</Text>
                 </TouchableOpacity>
@@ -150,13 +197,13 @@ const Dispositivo = () => {
               <View style={styles.alarmContainer}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => togglePuerta("Puerta 3", "Abrir")}
+                  onPress={() => abrirPuerta("6606ec6ed2ae5af273d98387")}
                 >
                   <Text style={styles.buttonText}>Abrir</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => togglePuerta("Puerta 3", "Cerrar")}
+                  onPress={() => cerrarPuerta("6606ec6ed2ae5af273d98387")}
                 >
                   <Text style={styles.buttonText}>Cerrar</Text>
                 </TouchableOpacity>
