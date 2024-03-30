@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import UserAdmin from "../models/UserAdmin.js";
 import bcrypt from "bcryptjs";
 import { creartoken } from "../libs/jwt.js";
 
@@ -48,34 +49,33 @@ export const register = async (req, res) => {
   }
 };
 
-// export const register = async (req, res) => {
-//   const { username, email, password, rfid, puerta } = req.body;
-//   try {
-//      const passwordHash = await bcrypt.hash(password, 10);
-//     const newUser = new User({
-//       username,
-//       email,
-//       password: passwordHash,
-//       rfid,
-//       puerta
-//     });
-//     const userSave = await newUser.save();
-//     const token = await creartoken({ id: userSave._id });
+export const registerAdmin = async (req, res) => {
+  const { username, email,  password } = req.body;
+  try {
 
-//     res.cookie("token", token);
-//     res.json({
-//       id: userSave._id,
-//       username: userSave.username,
-//       email: userSave.email,
-//       rfid: userSave.rfid,
-//       puerta: userSave.puerta
-//     });
-//   } catch (error) {
-//     console.error("Error en el registro:", error); // Imprimir el error en la consola del servidor
-//     res.status(500).json({ message: "Error interno del servidor" });
-//   }
-// };
+    const passwordHash = await bcrypt.hash(password, 10);
+    const newUser = new UserAdmin({
+      username,
+      email,
+      password: passwordHash,
+    });
+    
+    const userSave = await newUser.save();
+    const token = await creartoken({ id: userSave._id });
 
+    res.cookie("token", token);
+    res.json({
+      id: userSave._id,
+      username: userSave.username,
+      email: userSave.email,
+      password:userSave.password
+    });
+    
+  } catch (error) {
+    console.error("Error en el registro:", error); // Imprimir el error en la consola del servidor
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
 
 
 
@@ -83,7 +83,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const userFound = await User.findOne({ email });
+    const userFound = await UserAdmin.findOne({ email });
     if (!userFound)
       return res.status(400).json({ message: "usuario no encontrado" });
 
@@ -111,6 +111,7 @@ export const logout = async (req, res) => {
   });
   return res.sendStatus(200);
 }; // cierra logout
+
 
 // validamos sesiones
 export const profile = async (req, res) => {

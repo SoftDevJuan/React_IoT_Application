@@ -1,4 +1,6 @@
 
+
+# actuadores
 POST http://localhost:3000/api/actuadores HTTP/1.1
 Content-Type: application/json
 
@@ -11,7 +13,7 @@ Content-Type: application/json
   
 }
 
-###
+### movimientos 
 
 POST http://localhost:3000/api/postMovimiento HTTP/1.1
 Content-Type: application/json
@@ -24,7 +26,7 @@ Content-Type: application/json
       "puerta": 2
   
 }
-####
+#### usuarios
 POST http://localhost:3000/api/register HTTP/1.1
 Content-Type: application/json
 
@@ -34,6 +36,21 @@ Content-Type: application/json
       "email":"Test5@gmail.com",
       "rfid": "555-555-555",
       "puerta": 2
+  
+}
+
+### puertas 
+
+POST http://localhost:3000/api/puertas HTTP/1.1
+Content-Type: application/json
+
+{
+    
+      "numero": 3,
+      "status":false,
+      "acceso": false,
+      "alarma": false,
+      "activacion": "local"
   
 }
 
@@ -54,3 +71,10 @@ PATCH   http://localhost:3000/api/actuadores/65f88ab4acc47d14279c0980 HTTP/1.1
 
 ### ELIMINAR UN COMPONENTE
 DELETE http://localhost:3000/api/actuadores/65f51798d8c4c8fc00d7d716 HTTP/1.1
+
+
+
+# PUERTAS 
+###
+
+PUT http://localhost:3000/api/puertas/66084d807f5c2b9b20c7aa9c HTTP/1.1
