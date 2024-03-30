@@ -23,6 +23,7 @@ export const getAllActuadores = (req, res) => {
     .then((Actuador) => {
       res.setHeader('Content-Type', 'application/json');
       res.json(Actuador);
+      
     })
     .catch((error) => res.json({ message: error }));
 };
