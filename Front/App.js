@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RegisterPages from './src/pages/Register';
 import Login from './src/pages/Login';
 import Principal from './src/pages/Principal';
+import RegisterAdmin from './src/pages/RegistroAdmin';
 
 const Stack = createStackNavigator();
 
@@ -15,11 +16,11 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Bienvenido</Text>
-      {/* <TouchableOpacity
+      <TouchableOpacity
         style={styles.buttonContainer}
-        onPress={() => navigation.navigate('Register')}>
+        onPress={() => navigation.navigate('RegisterAdmin')}>
         <Text style={styles.buttonText}>Registrar</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.buttonContainer}
         onPress={() => navigation.navigate('Login')}>
@@ -51,6 +52,11 @@ export default function App() {
         <Stack.Screen 
           name="Principal" 
           component={Principal} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="RegisterAdmin" 
+          component={RegisterAdmin} 
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>

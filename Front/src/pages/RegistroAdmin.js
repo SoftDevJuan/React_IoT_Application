@@ -11,10 +11,11 @@ import {
   TouchableOpacity,
   Text,
   ScrollView,
+  
 } from "react-native";
 import axios from "axios";
 
-function RegisterPages() {
+function RegisterAdmin() {
 
 
   const navigation = useNavigation()
@@ -23,8 +24,6 @@ function RegisterPages() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [puerta, setPuerta] = useState("");
-  const [RFID, setRFID] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true); // Estado para controlar si se muestra o no la contraseña
 
   const toggleSecureEntry = () => {
@@ -37,13 +36,11 @@ function RegisterPages() {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.12:3000/api/register",
+        "http://192.168.1.12:3000/api/registerAdmin",
         {
           username: username,
           email:email,
-          // password:password,
-          rfid: RFID,
-          puerta: puerta
+          password:password,
         }
       );
 
@@ -51,19 +48,19 @@ function RegisterPages() {
       console.log("ID del usuario:", response.data.id);
       console.log("Nombre de usuario:", response.data.username);
       console.log("Correo electrónico:", response.data.email);
-      console.log("RFID:", response.data.rfid);
-      console.log("Puerta:", response.data.puerta);
+      
 
       setUsername("");
       setEmail("");
-      // setPassword("");
-      setRFID("");
-      setPuerta("");
+      setPassword("");
+      
 
       Alert.alert(
         "Registro exitoso",
         "¡Tu cuenta ha sido registrada con éxito!"
       );
+
+      navigation.navigate('Home')
     } catch (error) {
       console.error("Error al enviar datos al servidor:", error.message);
       Alert.alert(
@@ -92,8 +89,8 @@ function RegisterPages() {
           keyboardType="email-address"
           value={email}
         />
-        {/* <Text style={styles.label}>Contraseña</Text> */}
-        {/* <View style={styles.passwordInputContainer}>
+         <Text style={styles.label}>Contraseña</Text> 
+        <View style={styles.passwordInputContainer}>
           <TextInput
             style={styles.passwordInput}
             placeholder="Contraseña"
@@ -104,23 +101,7 @@ function RegisterPages() {
           <TouchableOpacity onPress={toggleSecureEntry} style={styles.toggleButton}>
             <Feather name={secureTextEntry ? "eye" : "eye-off"} size={24} color="black" />
           </TouchableOpacity>
-        </View> */}
-        <Text style={styles.label}>Tarjeta</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="RFID"
-          onChangeText={setRFID}
-          keyboardType="default"
-          value={RFID}
-        />
-        <Text style={styles.label}>Puerta</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="puerta"
-          onChangeText={setPuerta}
-          keyboardType="numeric"
-          value={puerta}
-        />
+        </View> 
 
         <TouchableOpacity onPress={handleRegister} style={styles.btnRegistrar}>
           <Text style={styles.btnTexto}>Registrar</Text>
@@ -134,14 +115,15 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     flexGrow: 1,
     justifyContent: "center",
+    
   },
   contenido: {
     backgroundColor: "#c8cbd1",
     flex: 1,
     justifyContent: "flex-start", // Alinea el contenido al principio
     paddingHorizontal: 23,
-    padding: 20,
-
+    padding: 60,
+    
   },
   label: {
     color: "#151517",
@@ -186,7 +168,7 @@ const styles = StyleSheet.create({
   },
   passwordInput: {
     flex: 1,
-    backgroundColor: "#959ac0",
+    backgroundColor: "#f0e9d8",
     padding: 15,
     borderRadius: 10,
     color: "#0d1323",
@@ -203,4 +185,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterPages;
+export default RegisterAdmin;
