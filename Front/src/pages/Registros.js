@@ -22,7 +22,7 @@ function Registros() {
   const fetchMovimientos = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.1.12:3000/api/getMovimientos"
+        "http://192.168.1.73:3000/api/getMovimientos"
       );
       setMovimientos(response.data);
       Animated.timing(fadeAnimMovimientos, {
@@ -38,7 +38,7 @@ function Registros() {
   const fetchUsuarios = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.1.12:3000/api/getUsuarios"
+        "http://192.168.1.73:3000/api/getUsuarios"
       );
       setUsuarios(response.data);
       Animated.timing(fadeAnimUsuarios, {

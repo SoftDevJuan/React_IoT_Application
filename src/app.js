@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import authRouter from "./routes/auth.routes.js";
-
+import espRouter from "./routes/ESProutes.js";
 import cookieParser from "cookie-parser";
 import cors from 'cors'
 
@@ -15,6 +15,7 @@ app.use(cookieParser());
 
 
 app.use("/api", authRouter);
+app.use("/api", espRouter);
 
      
 

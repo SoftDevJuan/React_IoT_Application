@@ -11,7 +11,7 @@ import {
 const Dispositivo = () => {
   // CONTROLAR LA ALARMA
   const encenderAlarma = async (id) => {
-    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
+    let url = `http://192.168.1.73:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
 
     // Configura la solicitud para encender la alarma
     let requestOptions = {
@@ -33,7 +33,7 @@ const Dispositivo = () => {
   };
 
   const apagarAlarma = async (id) => {
-    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
+    let url = `http://192.168.1.73:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
 
     // Configura la solicitud para apagar la alarma
     let requestOptions = {
@@ -56,7 +56,7 @@ const Dispositivo = () => {
 
   // CONTROLAR EL SERVO MOTOR
   const abrirPuerta = async (id) => {
-    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
+    let url = `http://192.168.1.73:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
 
     // Configura la solicitud para encender la alarma
     let requestOptions = {
@@ -78,7 +78,7 @@ const Dispositivo = () => {
   };
 
   const cerrarPuerta = async (id) => {
-    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
+    let url = `http://192.168.1.73:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
 
     // Configura la solicitud para apagar la alarma
     let requestOptions = {
@@ -106,7 +106,7 @@ const Dispositivo = () => {
     valorAlarma,
     valorActivacion
   ) => {
-    let url = `http://192.168.1.12:3000/api/puertas/${id}`;
+    let url = `http://192.168.1.73:3000/api/puertas/${id}`;
 
     // Crea un objeto para almacenar los campos a actualizar
     let fieldsToUpdate = {};

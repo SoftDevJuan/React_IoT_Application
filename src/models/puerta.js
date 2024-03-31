@@ -2,17 +2,17 @@ import { mongoose } from "mongoose"
 
 const puertaSchema = new mongoose.Schema({
     numero : {
-        type: Number,
+        type: String,
     
     },
     status :{
-        type: Boolean
+        type: String
     },
     acceso : {
-        type : Boolean
+        type : String
     },
     alarma: {
-        type: Boolean
+        type: String
     },
     activacion:{
         type: String
