@@ -156,7 +156,7 @@ export const buscarAccesoPuerta = (req, res) => {
         if (acceso) {
             puertaEncontrada.acceso = acceso;
         }
-        if (puerta) {
+        if (status) {
             puertaEncontrada.status = status;
         }
 

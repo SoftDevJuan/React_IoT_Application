@@ -9,27 +9,27 @@ import {
     cerrarPuerta,
     actualizarAlarma,
     controlarPuerta,
-    actualizarRegistroRFID // Importa la función controladora correspondiente
-} from "../controllers/rfidController";
+    
+} from "../controllers/rfidController.js";
 
-// Configurar las rutas de la API
+// Configurar las rutas de la 
 
 
 // Rutas POST
-router.post('/api/registrarintento', registrarIntento);
+router.post('/registrarintento', registrarIntento);
 
 // Rutas GET
-router.get('/api/consultaPuerta/:numeroPuerta', consultaPuerta);
-router.get('/api/alarma/:numeroPuerta', consultaAlarma);
-router.get('/api/controlarPuerta/:numeroPuerta', buscarAccesoPuerta);
+router.get('/consultaPuerta/:numeroPuerta', consultaPuerta);
+router.get('/alarma/:numeroPuerta', consultaAlarma);
+router.get('/controlarPuerta/:numeroPuerta', buscarAccesoPuerta);
 
 // Rutas PUT
-router.put('/api/registrosRFIDes/:numeroPuerta', actualizarRegistroRFID); // Asigna la función controladora correspondiente
+//router.put('/registrosRFIDes/:numeroPuerta', actualizarRegistroRFID); / Asigna la función controladora correspondiente
 
 // Rutas PATCH
-router.patch('/api/cerrarPuerta/:numeroPuerta', cerrarPuerta);
-router.patch('/api/alarma/:numeroPuerta', actualizarAlarma);
-router.patch('/api/controlarPuerta/:numeroPuerta', controlarPuerta);
+router.patch('/cerrarPuerta/:numeroPuerta', cerrarPuerta);
+router.patch('/alarma/:numeroPuerta', actualizarAlarma);
+router.patch('/controlarPuerta/:numeroPuerta', controlarPuerta);
 
-// Exportar el enrutador configurado
+//Exportar el enrutador configurado
 export default router;
