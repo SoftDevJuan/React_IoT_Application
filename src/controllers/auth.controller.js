@@ -6,6 +6,7 @@ import { creartoken } from "../libs/jwt.js";
 
 
 
+
 export const getUsuarios = async (req, res) => {
   try {
     const usuarios = await User.find({}, 'username email rfid').limit(10); // Obtiene los usuarios con solo los campos username, email y rfid

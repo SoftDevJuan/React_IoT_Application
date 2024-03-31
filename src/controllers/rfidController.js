@@ -1,8 +1,7 @@
 import Router from "express";
-import registroRFID from '../models/registrosRFID';
-//const registroRFID = registrosRFID;
+import registrosRFID from '../models/registrosRFID';
 import Puerta from '../models/puerta';
-//const Puerta = Puertas;
+
 const router = Router();
 
 
@@ -13,14 +12,14 @@ const router = Router();
 /////////////////////////////////////////////////// POST //////////////////////////////////////////////////////////
 // esta direccion es para registrar los intentos de acceso con la tarjeta RFID
 
-router.post('/api/registrarintento', async (req, res) => {
-    const registroRFIDModel = registroRFID(req.body);
-    registroRFIDModel
+export const registrarIntento = (req, res) => {
+    const registrosRFIDModel = registrosRFID(req.body);
+    registrosRFIDModel
     .save()
-    .then((registroRFID) => res.json(registroRFID))
+    .then((registrosRFID) => res.json(registrosRFID))
     .catch((error) => res.json({message:error}));
 
-});
+};
 
 
 
@@ -28,7 +27,7 @@ router.post('/api/registrarintento', async (req, res) => {
 
 // esta direccion es para que el ESP consulte si hay un acceso nuevo en la puerta y en caso de ser permitido se abrira segun la respuesta del server
 
-router.get('/api/consultaPuerta/:numeroPuerta', (req, res) => {
+export const consultaPuerta = (req, res) => {
   const { numeroPuerta } = req.params; 
   
   Puerta 
@@ -50,14 +49,14 @@ router.get('/api/consultaPuerta/:numeroPuerta', (req, res) => {
       .catch((error) => {
           res.status(500).json({ message: error });
       });
-});
+};
 
 
 
 
 // esta direccion es para validar a traves del ESP si esta activada o desactivada la alarma
 
-router.get('/api/alarma/:numeroPuerta', (req, res) => {
+export const consultaAlarma = (req, res) => {
   const { numeroPuerta } = req.params; // Corrección aquí
   
   Puerta // Esto está incorrecto, deberías utilizar tu modelo de Mongoose
@@ -80,13 +79,13 @@ router.get('/api/alarma/:numeroPuerta', (req, res) => {
       .catch((error) => {
           res.status(500).json({ message: error });
       });
-});
+};
 
 
 
 // esta direccion es para que el ESP consulte si la puerta fue abierta o cerrada remotamente mediante la app
 
-router.get('/api/controlarPuerta/:numeroPuerta', (req, res) => {
+export const buscarAccesoPuerta = (req, res) => {
   const { numeroPuerta } = req.params; // Corrección aquí
   
   Puerta // Esto está incorrecto, deberías utilizar tu modelo de Mongoose
@@ -108,7 +107,7 @@ router.get('/api/controlarPuerta/:numeroPuerta', (req, res) => {
       .catch((error) => {
           res.status(500).json({ message: error });
       });
-});
+};
 
   
   ///////////////////////////////////////////// PUT ////////////////////////////////////////////////////////////
@@ -118,14 +117,14 @@ router.get('/api/controlarPuerta/:numeroPuerta', (req, res) => {
 
   // esta direccion es para registrar cualquier gafete que se acerque al sensor, valida tambien si tiene acceso o no
 
-  router.put('/api/registroRFIDes/:numeroPuerta', (req, res) => { //hay que modificarlo!!!!!!!!!!!!!!!!!! (juan carlos)
+  export const registrosRFIDe = (req, res) => { //hay que modificarlo!!!!!!!!!!!!!!!!!! (juan carlos)
     const {numeroPuerta} = req.params;
-    const {registroRFID_id, descripcion, ubicacion, activo, tipo, valor} = req.body;
-    registroRFID
-    .updateOne({registroRFID_id:id}, {$set:{registroRFID_id, descripcion, ubicacion, activo, tipo, valor}})
-    .then((registroRFID) => res.json(registroRFID))
+    const {registrosRFID_id, descripcion, ubicacion, activo, tipo, valor} = req.body;
+    registrosRFID
+    .updateOne({registrosRFID_id:id}, {$set:{registrosRFID_id, descripcion, ubicacion, activo, tipo, valor}})
+    .then((registrosRFID) => res.json(registrosRFID))
     .catch((error)=> res.json({message:error}));
-  });
+  };
   
   
 
@@ -140,7 +139,7 @@ router.get('/api/controlarPuerta/:numeroPuerta', (req, res) => {
 
   // esta direccion es para mandar a cerrar la puerta una vez que se haya accesado de manera fisica
   //es decir se ejecuta justo despues de que se accesa con gafete, esto para no dejar la puerta abierta y hacer el registro en la db del estado cerrado de la puerta
-  router.patch('/api/cerrarPuerta/:numeroPuerta', async (req, res) => {
+  export const cerrarPuerta = async (req, res) => {
     const { numeroPuerta } = req.params;
     const { acceso, status } = req.body;
 
@@ -170,14 +169,14 @@ router.get('/api/controlarPuerta/:numeroPuerta', (req, res) => {
         console.error("Error al actualizar la puerta:", error);
         res.status(500).json({ message: "Error interno del servidor" });
     }
-});
+};
 
 
 
 
 // esta direccion es para activar la alarma desde la app
 
-router.patch('/api/alarma/:numeroPuerta', async (req, res) => {
+export const actualizarAlarma = async (req, res) => {
   const { numeroPuerta } = req.params;
     const { alarma, activacion } = req.body;
 
@@ -207,7 +206,7 @@ router.patch('/api/alarma/:numeroPuerta', async (req, res) => {
         console.error("Error al actualizar la puerta:", error);
         res.status(500).json({ message: "Error interno del servidor" });
     }
-});
+};
 
 
 
@@ -215,7 +214,7 @@ router.patch('/api/alarma/:numeroPuerta', async (req, res) => {
 //esta direccion es para abrir o cerrar la puerta desde la app
 
 
-router.patch('/api/controlarPuerta/:numeroPuerta', async (req, res) => {
+export const controlarPuerta = async (req, res) => {
   const { numeroPuerta } = req.params;
     const { status, activacion } = req.body;
 
@@ -245,7 +244,7 @@ router.patch('/api/controlarPuerta/:numeroPuerta', async (req, res) => {
         console.error("Error al actualizar la puerta:", error);
         res.status(500).json({ message: "Error interno del servidor" });
     }
-});
+};
 
 
 

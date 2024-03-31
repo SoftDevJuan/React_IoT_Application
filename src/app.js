@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import authRouter from "./routes/auth.routes.js";
-import espRouter from "./routes/ESProutes.js";
+import espRouter from "./routes/rfid.routes.js";
 import cookieParser from "cookie-parser";
 import cors from 'cors'
 
