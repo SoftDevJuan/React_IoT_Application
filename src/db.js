@@ -1,20 +1,14 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-const USER_NAME= "dbUser";
-const PASSWORD="leo2720";
-const CLUSTER_NAME= "Clauter0";
-const DB_NAME= "prueba_2";
-
 dotenv.config()
 
 export const connectDB = async () => {
     try {
 
-        const connectionString = `mongodb+srv://${USER_NAME}:${PASSWORD}@${CLUSTER_NAME}.fc824vg.mongodb.net/${DB_NAME}`;
-        // console.log("Cadena de conexión:", connectionString);
+        const connectionString = `mongodb+srv://${process.env.USER_NAME}:${process.env.PASSWORD}@${process.env.CLUSTER_NAME}.fc824vg.mongodb.net/${process.env.DB_NAME}`;
         await mongoose.connect(connectionString);
-         console.log(`conectado a la bd ${DB_NAME}`);
+         console.log(`CONECTADO A LA BD ${process.env.DB_NAME}`);
         
     } catch (error) {
         console.error('Error al conectar a la base de datos:', error);

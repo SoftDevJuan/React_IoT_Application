@@ -123,7 +123,7 @@ const Dispositivo = () => {
 
     // Si valorActivacion no está definido, establece el valor predeterminado como "local"
     if (valorActivacion === undefined) {
-      valorActivacion = "local";
+      valorActivacion = "remota";
     }
 
      // Añade el valor de activacion al objeto de actualización

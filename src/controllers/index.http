@@ -75,6 +75,11 @@ DELETE http://localhost:3000/api/actuadores/65f51798d8c4c8fc00d7d716 HTTP/1.1
 
 
 # PUERTAS 
-###
-
+### actualizar puerta 
 PUT http://localhost:3000/api/puertas/66084d807f5c2b9b20c7aa9c HTTP/1.1
+
+### get de todas las puertas 
+
+GET  http://localhost:3000/api/puertas HTTP/1.1
+
+### get de puerta con su numero de puerta 

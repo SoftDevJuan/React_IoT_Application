@@ -23,12 +23,13 @@ import {
     deleteActuador,
     getAllActuadores,
     getActuadorById,
-    getPuertaID,
+} from "../controllers/componentesController.js"
+
+import {
     crearPuerta,
     getAllPuertas,
     updatePuerta
-} from "../controllers/componentesController.js"
-
+} from "../controllers/puertasController.js"
 
 const router = Router();
 
@@ -53,7 +54,6 @@ router.patch('/actuadores/:id', updateActuadorPartial);
 
 
 // PUERTAS
-router.get('/puertas/:puerta', getPuertaID);
 router.get('/puertas', getAllPuertas);
 router.post('/puertas', crearPuerta);
 router.put('/puertas/:id', updatePuerta);
