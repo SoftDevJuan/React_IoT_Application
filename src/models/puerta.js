@@ -5,6 +5,9 @@ const puertaSchema = new mongoose.Schema({
         type: Number,
     
     },
+    email:{
+        type: String
+    },
     idPuerta:{
         type: Number
     },

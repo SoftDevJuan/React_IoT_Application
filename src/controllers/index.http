@@ -62,6 +62,7 @@ Content-Type: application/json
 {
     
       "numero": 4,
+      "correo" :"Admin@gmail.com",
       "idPuerta": 444,
      
   
