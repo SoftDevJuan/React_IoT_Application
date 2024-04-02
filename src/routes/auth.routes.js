@@ -27,7 +27,9 @@ import {
 
 import {
     crearPuerta,
+    crearPuertaForm,
     getAllPuertas,
+    getPuertaByNumero,
     updatePuerta
 } from "../controllers/puertasController.js"
 
@@ -55,7 +57,9 @@ router.patch('/actuadores/:id', updateActuadorPartial);
 
 // PUERTAS
 router.get('/puertas', getAllPuertas);
+router.get('/puertaNumero',getPuertaByNumero)
 router.post('/puertas', crearPuerta);
+router.post('/puertasForm', crearPuertaForm);
 router.put('/puertas/:id', updatePuerta);
 
 

@@ -1,3 +1,100 @@
+// CONTROLAR LA ALARMA
+  const encenderAlarma = async (id) => {
+    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
+
+    // Configura la solicitud para encender la alarma
+    let requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ valor: true }), // Envía el valor true como JSON para encender la alarma
+    };
+
+    try {
+      const response = await fetch(url, requestOptions);
+      const data = await response.json();
+      console.log("Respuesta de la API:", data);
+      Alert.alert("ALARMA ENCENDIDA");
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+    }
+  };
+
+  const apagarAlarma = async (id) => {
+    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
+
+    // Configura la solicitud para apagar la alarma
+    let requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ valor: false }), // Envía el valor false como JSON para apagar la alarma
+    };
+
+    try {
+      const response = await fetch(url, requestOptions);
+      const data = await response.json();
+      console.log("Respuesta de la API:", data);
+      Alert.alert("ALARMA APAGADA");
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+    }
+  };
+
+  // CONTROLAR EL SERVO MOTOR
+  const abrirPuerta = async (id) => {
+    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
+
+    // Configura la solicitud para encender la alarma
+    let requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ valor: true }), // Envía el valor true como JSON para encender la alarma
+    };
+
+    try {
+      const response = await fetch(url, requestOptions);
+      const data = await response.json();
+      console.log("Respuesta de la API:", data);
+      Alert.alert("PUERTA ABIERTA");
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+    }
+  };
+
+  const cerrarPuerta = async (id) => {
+    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
+
+    // Configura la solicitud para apagar la alarma
+    let requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ valor: false }), // Envía el valor false como JSON para apagar la alarma
+    };
+
+    try {
+      const response = await fetch(url, requestOptions);
+      const data = await response.json();
+      console.log("Respuesta de la API:", data);
+      Alert.alert("PUERTA CERRADA");
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+    }
+  };
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////77
+
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 

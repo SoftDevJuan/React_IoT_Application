@@ -47,10 +47,23 @@ Content-Type: application/json
 {
     
       "numero": 3,
+      "idPuerta": 333,
       "status":false,
       "acceso": false,
       "alarma": false,
       "activacion": "local"
+  
+}
+### 
+
+POST http://localhost:3000/api/puertasForm HTTP/1.1
+Content-Type: application/json
+
+{
+    
+      "numero": 4,
+      "idPuerta": 444,
+     
   
 }
 
@@ -81,5 +94,8 @@ PUT http://localhost:3000/api/puertas/66084d807f5c2b9b20c7aa9c HTTP/1.1
 ### get de todas las puertas 
 
 GET  http://localhost:3000/api/puertas HTTP/1.1
+###
+
+GET  http://localhost:3000/api/puertaNumero HTTP/1.1
 
 ### get de puerta con su numero de puerta 

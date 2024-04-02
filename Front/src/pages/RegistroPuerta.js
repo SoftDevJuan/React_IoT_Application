@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons"; // Importar Feather Icons desde expo/vector-icons
 
@@ -15,57 +15,43 @@ import {
 } from "react-native";
 import axios from "axios";
 
-function RegisterAdmin() {
+function RegisterPuerta() {
 
-
-  const navigation = useNavigation()
-
-
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [secureTextEntry, setSecureTextEntry] = useState(true); // Estado para controlar si se muestra o no la contraseña
-
-  const toggleSecureEntry = () => {
-
-
-    setSecureTextEntry(!secureTextEntry);
-  };
+  const [numero, setNumero] = useState("");
+  const [idPuerta, setIdPuerta] = useState("");
+  
 
   const handleRegister = async () => {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.19:3000/api/registerAdmin",
+        "http://192.168.1.19:3000/api/puertasForm",
         {
-          username: username,
-          email:email,
-          password:password,
+          numero: numero,
+          idPuerta:idPuerta
         }
       );
 
       console.log("Respuesta del servidor:", response.data);
-      console.log("ID del usuario:", response.data.id);
-      console.log("Nombre de usuario:", response.data.username);
-      console.log("Correo electrónico:", response.data.email);
+      console.log("ID del la puerta:", response.data.id);
+      console.log("numero de puerta:", response.data.numero);
+      console.log("idPuerta de puerta: ", response.data.idPuerta);
+    
       
 
-      setUsername("");
-      setEmail("");
-      setPassword("");
+      setNumero("");
+      setIdPuerta("");
       
-
       Alert.alert(
         "Registro exitoso",
-        "¡Tu cuenta ha sido registrada con éxito!"
+        "¡Tu Puerta ha sido registrada con éxito!"
       );
 
-      navigation.navigate('Home')
     } catch (error) {
       console.error("Error al enviar datos al servidor:", error.message);
       Alert.alert(
         "Error de registro",
-        "Hubo un problema al registrar la cuenta. Por favor, intenta nuevamente."
+        "Hubo un problema al registrar la Puerta. Por favor, intenta nuevamente."
       );
     }
   };
@@ -73,35 +59,22 @@ function RegisterAdmin() {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.contenido}>
-        <Text style={styles.label}>Nombre</Text>
+      <Text style={styles.label}>Numero</Text>
         <TextInput
           style={styles.input}
-          placeholder="Nombre de Usuario"
-          onChangeText={setUsername}
-          keyboardType="default"
-          value={username}
+          placeholder="Numero de Puerta"
+          onChangeText={setNumero}
+          keyboardType="numeric"
+          value={numero}
         />
-        <Text style={styles.label}>Correo</Text>
+        <Text style={styles.label}>ID Puerta</Text>
         <TextInput
           style={styles.input}
-          placeholder="Correo Electrónico"
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          value={email}
+          placeholder="ID de la Puerta"
+          onChangeText={setIdPuerta}
+          keyboardType="numeric"
+          value={idPuerta}
         />
-         <Text style={styles.label}>Contraseña</Text> 
-        <View style={styles.passwordInputContainer}>
-          <TextInput
-            style={styles.passwordInput}
-            placeholder="Contraseña"
-            onChangeText={setPassword}
-            secureTextEntry={secureTextEntry}
-            value={password}
-          />
-          <TouchableOpacity onPress={toggleSecureEntry} style={styles.toggleButton}>
-            <Feather name={secureTextEntry ? "eye" : "eye-off"} size={24} color="black" />
-          </TouchableOpacity>
-        </View> 
 
         <TouchableOpacity onPress={handleRegister} style={styles.btnRegistrar}>
           <Text style={styles.btnTexto}>Registrar</Text>
@@ -138,7 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f0e9d8",
     padding: 15,
     borderRadius: 10,
-    color: "#000000",
+    color: "#343c48",
     marginBottom: 10,
     textAlign:"center"
   },
@@ -160,13 +133,13 @@ const styles = StyleSheet.create({
     fontSize: 23,
     textTransform:"uppercase"
   },
-  passwordInputContainer: {
+  accesoInputContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
   },
-  passwordInput: {
+  accesoInput: {
     flex: 1,
     backgroundColor: "#f0e9d8",
     padding: 15,
@@ -185,4 +158,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterAdmin;
+export default RegisterPuerta;

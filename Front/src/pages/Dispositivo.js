@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,95 +9,32 @@ import {
 } from "react-native";
 
 const Dispositivo = () => {
-  // CONTROLAR LA ALARMA
-  const encenderAlarma = async (id) => {
-    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
 
-    // Configura la solicitud para encender la alarma
-    let requestOptions = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ valor: true }), // Envía el valor true como JSON para encender la alarma
+  const [puertas, setPuertas] = useState([]);
+
+  useEffect(() => {
+    const fetchData = () => {
+      try {
+        // Llamar a la API para obtener todas las puertas
+        fetch("http://192.168.1.19:3000/api/puertaNumero")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => setPuertas(data))
+        .catch((error) => console.error("Error fetching data: ", error));
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
     };
-
-    try {
-      const response = await fetch(url, requestOptions);
-      const data = await response.json();
-      console.log("Respuesta de la API:", data);
-      Alert.alert("ALARMA ENCENDIDA");
-    } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
-    }
-  };
-
-  const apagarAlarma = async (id) => {
-    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
-
-    // Configura la solicitud para apagar la alarma
-    let requestOptions = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ valor: false }), // Envía el valor false como JSON para apagar la alarma
-    };
-
-    try {
-      const response = await fetch(url, requestOptions);
-      const data = await response.json();
-      console.log("Respuesta de la API:", data);
-      Alert.alert("ALARMA APAGADA");
-    } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
-    }
-  };
-
-  // CONTROLAR EL SERVO MOTOR
-  const abrirPuerta = async (id) => {
-    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
-
-    // Configura la solicitud para encender la alarma
-    let requestOptions = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ valor: true }), // Envía el valor true como JSON para encender la alarma
-    };
-
-    try {
-      const response = await fetch(url, requestOptions);
-      const data = await response.json();
-      console.log("Respuesta de la API:", data);
-      Alert.alert("PUERTA ABIERTA");
-    } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
-    }
-  };
-
-  const cerrarPuerta = async (id) => {
-    let url = `http://192.168.1.12:3000/api/actuadores/${id}`; // Define la URL de tu API aquí
-
-    // Configura la solicitud para apagar la alarma
-    let requestOptions = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ valor: false }), // Envía el valor false como JSON para apagar la alarma
-    };
-
-    try {
-      const response = await fetch(url, requestOptions);
-      const data = await response.json();
-      console.log("Respuesta de la API:", data);
-      Alert.alert("PUERTA CERRADA");
-    } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
-    }
-  };
+  
+    const intervalId = setInterval(fetchData, 2000); // Realizar la consulta cada 2 segundos
+  
+    return () => clearInterval(intervalId); // Limpiar el intervalo cuando el componente se desmonte
+  
+  }, []);
 
   // PUT A PUERTA
   const statusPuerta = async (
@@ -106,7 +43,7 @@ const Dispositivo = () => {
     valorAlarma,
     valorActivacion
   ) => {
-    let url = `http://192.168.1.12:3000/api/puertas/${id}`;
+    let url = `http://192.168.1.19:3000/api/puertas/${id}`;
 
     // Crea un objeto para almacenar los campos a actualizar
     let fieldsToUpdate = {};
@@ -150,43 +87,36 @@ const Dispositivo = () => {
     }
   };
 
-  // Función para encender/apagar la alarma
-  const toggleAlarm = (id, action) => {
-    // Establece el valor de la alarma según la acción
+  const toggleAlarm = (numero, action) => {
+    const puerta = puertas.find((puerta) => puerta.numero === numero);
     const valorAlarma = action === "encender" ? true : false;
-    statusPuerta(id, null, valorAlarma); // Solo cambia el valor de la alarma
+    statusPuerta(puerta._id, null, valorAlarma);
   };
 
-  // Función para abrir/cerrar la puerta
-  const toggleDoor = (id, action) => {
-    // Establece el valor de status según la acción
+  const toggleDoor = (numero, action) => {
+    const puerta = puertas.find((puerta) => puerta.numero === numero);
     const valorStatus = action === "abrir" ? true : false;
-    statusPuerta(id, valorStatus, null); // Solo cambia el valor de status
+    statusPuerta(puerta._id, valorStatus, null);
   };
 
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.doorContainer}>
-          {/* Contenedor de Puerta 1 */}
-          <View style={styles.doorWrapper}>
+        {puertas.map((puerta) => (
+          <View style={styles.doorWrapper} key={puerta._id}>
             <View style={styles.doorSection}>
-              <Text style={styles.sectionTitle}>Puerta 1</Text>
+              <Text style={styles.sectionTitle}>Puerta {puerta.numero}</Text>
               <View style={styles.alarmContainer}>
                 <Text style={styles.sectionTitle}>Alarma</Text>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() =>
-                    toggleAlarm("66084d807f5c2b9b20c7aa9c", "apagar")
-                  }
+                  onPress={() => toggleAlarm(puerta.numero, "apagar")}
                 >
                   <Text style={styles.buttonText}>Apagar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() =>
-                    toggleAlarm("66084d807f5c2b9b20c7aa9c", "encender")
-                  }
+                  onPress={() => toggleAlarm(puerta.numero, "encender")}
                 >
                   <Text style={styles.buttonText}>Encender</Text>
                 </TouchableOpacity>
@@ -195,119 +125,25 @@ const Dispositivo = () => {
               <View style={styles.alarmContainer}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() =>
-                    toggleDoor("66084d807f5c2b9b20c7aa9c", "abrir")
-                  }
+                  onPress={() => toggleDoor(puerta.numero, "abrir")}
                 >
                   <Text style={styles.buttonText}>Abrir</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() =>
-                    toggleDoor("66084d807f5c2b9b20c7aa9c", "cerrar")
-                  }
+                  onPress={() => toggleDoor(puerta.numero, "cerrar")}
                 >
                   <Text style={styles.buttonText}>Cerrar</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-
-          {/* Contenedor de Puerta 2 */}
-          <View style={styles.doorWrapper}>
-            <View style={styles.doorSection}>
-              <Text style={styles.sectionTitle}>Puerta 2</Text>
-              <View style={styles.alarmContainer}>
-                <Text style={styles.sectionTitle}>Alarma</Text>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    toggleAlarm("660858ee18c011eb693b2b1c", "apagar")
-                  }
-                >
-                  <Text style={styles.buttonText}>Apagar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    toggleAlarm("660858ee18c011eb693b2b1c", "encender")
-                  }
-                >
-                  <Text style={styles.buttonText}>Encender</Text>
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.alarmContainer}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    toggleDoor("660858ee18c011eb693b2b1c", "abrir")
-                  }
-                >
-                  <Text style={styles.buttonText}>Abrir</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    toggleDoor("660858ee18c011eb693b2b1c", "cerrar")
-                  }
-                >
-                  <Text style={styles.buttonText}>Cerrar</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
-          {/* Contenedor de Puerta 3 */}
-          <View style={styles.doorWrapper}>
-            <View style={styles.doorSection}>
-              <Text style={styles.sectionTitle}>Puerta 3</Text>
-              <View style={styles.alarmContainer}>
-                <Text style={styles.sectionTitle}>Alarma</Text>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    toggleAlarm("6608596d7fc18b2d8acdd26c", "apagar")
-                  }
-                >
-                  <Text style={styles.buttonText}>Apagar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    toggleAlarm("6608596d7fc18b2d8acdd26c", "encender")
-                  }
-                >
-                  <Text style={styles.buttonText}>Encender</Text>
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.alarmContainer}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    toggleDoor("6608596d7fc18b2d8acdd26c", "abrir")
-                  }
-                >
-                  <Text style={styles.buttonText}>Abrir</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    toggleDoor("6608596d7fc18b2d8acdd26c", "cerrar")
-                  }
-                >
-                  <Text style={styles.buttonText}>Cerrar</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </View>
+        ))}
       </View>
     </ScrollView>
   );
 };
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,

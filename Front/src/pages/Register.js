@@ -37,7 +37,7 @@ function RegisterPages() {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.12:3000/api/register",
+        "http://192.168.1.19:3000/api/register",
         {
           username: username,
           email:email,

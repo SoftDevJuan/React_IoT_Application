@@ -5,6 +5,9 @@ const puertaSchema = new mongoose.Schema({
         type: Number,
     
     },
+    idPuerta:{
+        type: Number
+    },
     status :{
         type: Boolean
     },

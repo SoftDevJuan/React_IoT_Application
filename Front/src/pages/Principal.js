@@ -6,6 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import Registros from './Registros';
 import Dispositivo from './Dispositivo';
 import RegisterPages from './Register';
+import RegisterPuerta from './RegistroPuerta';
 
 const Menu = createDrawerNavigator();
 
@@ -37,6 +38,7 @@ function Principal() {
             <Menu.Screen name="Registros" component={Registros}/>
             <Menu.Screen name="Dispositivo" component={Dispositivo}/>
             <Menu.Screen name="Registrar Usuario" component={RegisterPages}/>
+            <Menu.Screen name="Registrar Puerta" component={RegisterPuerta}/>
             
             
         </Menu.Navigator>
