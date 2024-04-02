@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet, Animated } from "react-native";
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 function Registros() {
   const [movimientos, setMovimientos] = useState([]);
@@ -9,27 +11,42 @@ function Registros() {
   const [fadeAnimMovimientos] = useState(new Animated.Value(0));
   const [fadeAnimUsuarios] = useState(new Animated.Value(0));
 
+  const [userEmail, setUserEmail] = useState('');
+
+  useEffect(() => {
+      // Recuperar el correo electrónico almacenado al cargar la vista
+      AsyncStorage.getItem('userEmail').then((value) => {
+          if (value !== null) {
+              setUserEmail(value);
+              console.log("Valor de userEmail:", value); 
+          }
+      });
+  }, []);
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetchMovimientos();
       fetchUsuarios();
-    }, 2000);
+    }, 3000);
 
     // Limpio el intervalo cuando el componente se desmonta
     return () => clearInterval(intervalId);
   }, []);
-
   const fetchMovimientos = async () => {
     try {
-      const response = await axios.get(
-        "http://192.168.1.19:3000/api/getMovimientos"
-      );
-      setMovimientos(response.data);
-      Animated.timing(fadeAnimMovimientos, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start();
+      const userEmail = await AsyncStorage.getItem('userEmail');
+      if (userEmail !== null) {
+        const response = await axios.get(
+          "http://192.168.1.19:3000/api/getMovimientos",
+          { params: { emailAdmin: userEmail } }
+        );
+        setMovimientos(response.data);
+        Animated.timing(fadeAnimMovimientos, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }).start();
+      }
     } catch (error) {
       console.error("Error al obtener movimientos:", error);
     }
@@ -37,15 +54,19 @@ function Registros() {
 
   const fetchUsuarios = async () => {
     try {
-      const response = await axios.get(
-        "http://192.168.1.19:3000/api/getUsuarios"
-      );
-      setUsuarios(response.data);
-      Animated.timing(fadeAnimUsuarios, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start();
+      const userEmail = await AsyncStorage.getItem('userEmail');
+      if (userEmail !== null) {
+        const response = await axios.get(
+          "http://192.168.1.19:3000/api/getUsuarios",
+          { params: { emailAdmin: userEmail } }
+        );
+        setUsuarios(response.data);
+        Animated.timing(fadeAnimUsuarios, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }).start();
+      }
     } catch (error) {
       console.error("Error al obtener usuarios:", error);
     }

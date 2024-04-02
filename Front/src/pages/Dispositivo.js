@@ -7,10 +7,24 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const Dispositivo = () => {
-
+  const [userEmail, setUserEmail] = useState('');
   const [puertas, setPuertas] = useState([]);
+
+
+  useEffect(() => {
+      // Recuperar el correo electrónico almacenado al cargar la vista
+      AsyncStorage.getItem('userEmail').then((value) => {
+          if (value !== null) {
+              setUserEmail(value);
+          }
+      });
+  }, []);
+
 
   useEffect(() => {
     const fetchData = () => {

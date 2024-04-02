@@ -8,7 +8,13 @@ import { creartoken } from "../libs/jwt.js";
 
 export const getUsuarios = async (req, res) => {
   try {
-    const usuarios = await User.find({}, 'username email rfid').limit(10); // Obtiene los usuarios con solo los campos username, email y rfid
+    
+    const emailAdmin = req.query.emailAdmin; 
+    
+    
+    // Obtener solo los usuarios que tienen el emailAdmin correspondiente
+    const usuarios = await User.find({ emailAdmin: emailAdmin });
+
     if (!usuarios || usuarios.length === 0) {
       return res.status(404).json({ message: "No se encontraron usuarios." });
     }
@@ -21,13 +27,12 @@ export const getUsuarios = async (req, res) => {
 
 
 export const register = async (req, res) => {
-  const { username, email,  rfid, puerta } = req.body;
+  const { username, email, emailAdmin, rfid, puerta } = req.body;
   try {
-    //  const passwordHash = await bcrypt.hash(password, 10);
     const newUser = new User({
       username,
       email,
-      // password: passwordHash,
+      emailAdmin,
       rfid,
       puerta
     });
@@ -40,12 +45,14 @@ export const register = async (req, res) => {
       id: userSave._id,
       username: userSave.username,
       email: userSave.email,
+      emailAdmin: userSave.emailAdmin,
       rfid: userSave.rfid,
       puerta: userSave.puerta
     });
   } catch (error) {
     console.error("Error en el registro:", error); // Imprimir el error en la consola del servidor
     res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: error.message });
   }
 };
 

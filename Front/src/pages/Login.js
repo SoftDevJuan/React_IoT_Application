@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { 
     StyleSheet,
     View,
@@ -36,7 +38,7 @@ const LoginForm = () => {
         if (data.id) {
         setEmail("");
         setPassword("");
-       
+        AsyncStorage.setItem('userEmail', email); // Guardar el correo electrónico
           // Si la respuesta es correcta, mostrar un Alert y navegar a la pantalla "Principal"
           Alert.alert('¡Inicio de sesión exitoso!', '¡Bienvenido!');
           navigation.navigate('Principal'); // Ajusta el nombre de la pantalla según corresponda

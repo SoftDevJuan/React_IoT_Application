@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { Feather } from "@expo/vector-icons"; // Importar Feather Icons desde expo/vector-icons
 
 import {
@@ -15,21 +16,24 @@ import {
 import axios from "axios";
 
 function RegisterPages() {
+    const [userEmail, setUserEmail] = useState('');
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [puerta, setPuerta] = useState("");
+    const [RFID, setRFID] = useState("");
+    const [secureTextEntry, setSecureTextEntry] = useState(true); // Estado para controlar si se muestra o no la contraseña
+  
+    useEffect(() => {
+        // Recuperar el correo electrónico almacenado al cargar la vista
+        AsyncStorage.getItem('userEmail').then((value) => {
+            if (value !== null) {
+                setUserEmail(value);
+            }
+        });
+    }, []);
 
-
-  const navigation = useNavigation()
-
-
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [puerta, setPuerta] = useState("");
-  const [RFID, setRFID] = useState("");
-  const [secureTextEntry, setSecureTextEntry] = useState(true); // Estado para controlar si se muestra o no la contraseña
 
   const toggleSecureEntry = () => {
-
-
     setSecureTextEntry(!secureTextEntry);
   };
 
@@ -41,7 +45,7 @@ function RegisterPages() {
         {
           username: username,
           email:email,
-          // password:password,
+          emailAdmin:userEmail,
           rfid: RFID,
           puerta: puerta
         }
@@ -92,19 +96,7 @@ function RegisterPages() {
           keyboardType="email-address"
           value={email}
         />
-        {/* <Text style={styles.label}>Contraseña</Text> */}
-        {/* <View style={styles.passwordInputContainer}>
-          <TextInput
-            style={styles.passwordInput}
-            placeholder="Contraseña"
-            onChangeText={setPassword}
-            secureTextEntry={secureTextEntry}
-            value={password}
-          />
-          <TouchableOpacity onPress={toggleSecureEntry} style={styles.toggleButton}>
-            <Feather name={secureTextEntry ? "eye" : "eye-off"} size={24} color="black" />
-          </TouchableOpacity>
-        </View> */}
+       
         <Text style={styles.label}>Tarjeta</Text>
         <TextInput
           style={styles.input}

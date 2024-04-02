@@ -13,9 +13,10 @@ import { mongoose } from "mongoose";
         trim: true,
         unique: true,
     },
-    password:{
+    emailAdmin:{
         type: String,
-        
+        required: true,
+
     },
     rfid: {
         type: String,

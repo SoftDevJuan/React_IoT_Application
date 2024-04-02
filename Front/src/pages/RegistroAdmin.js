@@ -27,8 +27,6 @@ function RegisterAdmin() {
   const [secureTextEntry, setSecureTextEntry] = useState(true); // Estado para controlar si se muestra o no la contraseña
 
   const toggleSecureEntry = () => {
-
-
     setSecureTextEntry(!secureTextEntry);
   };
 

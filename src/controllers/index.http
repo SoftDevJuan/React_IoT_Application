@@ -20,10 +20,11 @@ Content-Type: application/json
 
 {
     
-      "username": "Test1",
-      "email":"Test1@gmail.com",
-      "rfid": "111-111-111",
-      "puerta": 2
+      "username": "Test4",
+      "email":"Test4@gmail.com",
+      "emailAdmin": "Admin2@gmail.com",
+      "rfid": "444-444-444",
+      "puerta": 1
   
 }
 #### usuarios
@@ -32,9 +33,10 @@ Content-Type: application/json
 
 {
     
-      "username": "Test5",
-      "email":"Test5@gmail.com",
-      "rfid": "555-555-555",
+      "username": "Test4",
+      "email":"Test4@gmail.com",
+      "emailAdmin": "Admin2@gmail.com",
+      "rfid": "444-444-444",
       "puerta": 2
   
 }
