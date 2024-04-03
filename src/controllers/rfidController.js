@@ -1,7 +1,7 @@
 import Router from "express";
 import registrosRFID from '../models/registrosRFID';
 import Puerta from '../models/puerta';
-
+import usuario from '../models/user.model';
 const router = Router();
 
 
@@ -49,6 +49,21 @@ export const consultaPuerta = (req, res) => {
       .catch((error) => {
           res.status(500).json({ message: error });
       });
+};
+
+
+
+
+
+export const consultaRFID = async (req, res) => {
+  try {
+      const { rfid } = req.params;
+      const puertas = await usuario.find({ rfid: rfid }, { puerta: 1, _id: 0 }).exec();
+      res.json(puertas);
+  } catch (error) {
+      console.error('Error al consultar las puertas:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+  }
 };
 
 

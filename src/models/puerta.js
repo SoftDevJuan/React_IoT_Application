@@ -1,25 +1,27 @@
 import { mongoose } from "mongoose"
 
+
+
 const puertaSchema = new mongoose.Schema({
-    numero : {
+    numero: {
         type: String,
-    
     },
-    status :{
+    status: {
         type: String
     },
-    acceso : {
-        type : String
+    acceso: {
+        type: String
     },
     alarma: {
         type: String
     },
-    activacion:{
+    activacion: {
         type: String
-    }
-   
-   
-}, {timestamps:true, versionKey: false})
+    },
+    usuarios: [{ 
+        rfid_id: { type: String } // Campo para almacenar los ID de los RFID
+    }]
+}, { timestamps: true, versionKey: false });
 
 
 

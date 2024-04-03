@@ -24,11 +24,11 @@ import { mongoose } from "mongoose";
         unique: true,
 
     }, 
-    puerta: {
-        type: Number,
-        required: true,
+    puerta :[{ 
+        puerta_id: { type: String } // Campo para almacenar los ID de los RFID
+    }]
         
-    }
+    
 
 },{versionKey : false,timestamps: true})
 

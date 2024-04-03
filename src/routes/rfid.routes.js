@@ -4,6 +4,7 @@ const router = Router();
 import {
     registrarIntento,
     consultaPuerta,
+    consultaRFID,
     consultaAlarma,
     buscarAccesoPuerta,
     cerrarPuerta,
@@ -20,6 +21,7 @@ router.post('/registrarintento', registrarIntento);
 
 // Rutas GET
 router.get('/consultaPuerta/:numeroPuerta', consultaPuerta);
+router.get('/consultaRFID/:rfid', consultaRFID);
 router.get('/alarma/:numeroPuerta', consultaAlarma);
 router.get('/controlarPuerta/:numeroPuerta', buscarAccesoPuerta);
 
