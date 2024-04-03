@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons"; // Importar Feather Icons desde expo/vector-icons
-
+import IPADRESS from "../../Controllers/IP_Local";
 import {
   View,
   TextInput,
@@ -27,8 +27,6 @@ function RegisterAdmin() {
   const [secureTextEntry, setSecureTextEntry] = useState(true); // Estado para controlar si se muestra o no la contraseña
 
   const toggleSecureEntry = () => {
-
-
     setSecureTextEntry(!secureTextEntry);
   };
 
@@ -36,7 +34,7 @@ function RegisterAdmin() {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.12:3000/api/registerAdmin",
+        `http://${IPADRESS}:3000/api/registerAdmin`,
         {
           username: username,
           email:email,

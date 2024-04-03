@@ -3,8 +3,14 @@ import { mongoose } from "mongoose"
 
 
 const puertaSchema = new mongoose.Schema({
-    numero: {
-        type: String,
+    numero : {
+        type: Number,
+    },
+    emailAdmin:{
+        type: String   
+    },
+    idPuerta:{
+        type: String
     },
     status: {
         type: String
@@ -19,9 +25,11 @@ const puertaSchema = new mongoose.Schema({
         type: String
     },
     usuarios: [{ 
-        rfid_id: { type: String } // Campo para almacenar los ID de los RFID
+        rfid_id: { type: String }
     }]
-}, { timestamps: true, versionKey: false });
+   
+   
+}, {timestamps:true, versionKey: false})
 
 
 

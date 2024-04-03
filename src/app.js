@@ -17,7 +17,4 @@ app.use(cookieParser());
 app.use("/api", authRouter);
 app.use("/api", espRouter);
 
-     
-
-
 export default app;

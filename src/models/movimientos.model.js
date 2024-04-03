@@ -14,6 +14,11 @@ import { mongoose } from "mongoose";
         trim: true,
         
     },
+    emailAdmin:{
+        type: String,
+        required: true,
+
+    },
     rfid: {
         type: String,
         required: true,
