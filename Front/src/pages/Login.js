@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import IPADRESS  from "../../Controllers/IP_Local"
 import { 
     StyleSheet,
     View,
@@ -9,16 +9,17 @@ import {
     Text,
     Alert,
  } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginForm = () => {
+
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
     // Enviar datos a la API
-    fetch('http://192.168.1.19:3000/api/login', {
+    fetch(`http://${IPADRESS}:3000/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -51,7 +52,8 @@ const LoginForm = () => {
         console.error('Error:', error);
         Alert.alert('Error', 'Hubo un problema al iniciar sesión. Por favor, inténtalo de nuevo.');
       });
-  };
+};
+  
 
   return (
     <View style={styles.contenido}>
@@ -119,6 +121,5 @@ const styles = StyleSheet.create({
     textTransform:"uppercase"
   },
 });
-
 
 export default LoginForm;

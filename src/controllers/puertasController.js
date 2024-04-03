@@ -3,31 +3,59 @@ import puertaModelo from '../models/puerta.js'
 
   
   // Función para obtener todos los actuadores
-  export const getAllPuertas = (req, res) => {
-    puertaModel
-      .find()
-      .then((puerta) => {
-        res.setHeader('Content-Type', 'application/json');
-        res.json(puerta);
-      })
-      .catch((error) => res.json({ message: error }));
+  export const getAllPuertas = async (req, res) => {
+    try {
+      const emailAdmin = req.body.emailAdmin; 
+      // Obtener solo los usuarios que tienen el emailAdmin correspondiente
+      const puertas = await puertaModel.find({ emailAdmin: emailAdmin });
+      if (!puertas || puertas.length === 0) {
+        return res.status(404).json({ message: "No se encontraron usuarios." });
+      }
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).json(puertas);
+    } catch (error) {
+      console.error("Error al obtener puertas:", error);
+      res.status(500).json({ message: "Error interno del servidor." });
+    }
+    
+    // // Obtener solo los usuarios que tienen el emailAdmin correspondiente
+    // const puerta = await puertaModel.find({ emailAdmin: emailAdmin });
+    // .then((puerta) => {
+    //     res.setHeader('Content-Type', 'application/json');
+    //     res.json(puerta);
+    //   })
+    //   .catch((error) => res.json({ message: error }));
+  };
+
+  
+  
+  export const getPuertaByNumero = async (req, res) => {
+    try {
+      const emailAdmin = req.query.emailAdmin; 
+      // Obtener solo los usuarios que tienen el emailAdmin correspondiente
+      const puertas = await puertaModel.find({ emailAdmin: emailAdmin });
+      if (!puertas || puertas.length === 0) {
+        return res.status(404).json({ message: "No se encontraron usuarios." });
+      }
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).json(puertas);
+    } catch (error) {
+      console.error("Error al obtener puertas:", error);
+      res.status(500).json({ message: "Error interno del servidor." });
+    }
+    // puertaModel
+    // .find()
+    //   .then((puerta) => {
+    //     if (puerta) {
+    //       res.json(puerta);
+    //     } else {
+    //       res.status(404).json({ message: "Puerta no encontrada" });
+    //     }
+    //   })
+    //   .catch((error) => res.status(500).json({ message: `Error: ${error.message}` }));
   };
   
-  // Obtener una puerta por su número
-  export const getPuertaByNumero = (req, res) => {
-    puertaModel
-    .find()
-      .then((puerta) => {
-        if (puerta) {
-          res.json(puerta);
-        } else {
-          res.status(404).json({ message: "Puerta no encontrada" });
-        }
-      })
-      .catch((error) => res.status(500).json({ message: `Error: ${error.message}` }));
-  };
-  
-  // Función para crear un nuevo actuador
+
   export const crearPuerta = async (req, res) => {
     const componente = puertaModel(req.body);
     
@@ -38,22 +66,21 @@ import puertaModelo from '../models/puerta.js'
   };
   
 
-  // Función para crear una nueva puerta con valores por defecto
 export const crearPuertaForm = async (req, res) => {
-  const { numero, idPuerta } = req.body;
+  const { numero, emailAdmin, idPuerta, usuarios  } = req.body;
 
-  // Creamos una nueva instancia del modelo de Puerta
   const nuevaPuerta = new puertaModelo({
     numero: numero,
+    emailAdmin: emailAdmin,
     // idPuerta: Math.floor(Math.random() * 1000), // Generamos un idPuerta aleatorio
     idPuerta: idPuerta,
     status: false,
     acceso: false,
     alarma: false,
-    activacion: "Remota"
+    activacion: "Remota",
+    usuarios: usuarios
   });
 
-  // Guardamos la nueva puerta en la base de datos
   nuevaPuerta.save()
     .then((puerta) => {
       res.json(puerta); 

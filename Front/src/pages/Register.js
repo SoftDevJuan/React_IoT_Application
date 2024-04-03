@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { Feather } from "@expo/vector-icons"; // Importar Feather Icons desde expo/vector-icons
+import IPADRESS  from "../../Controllers/IP_Local"
 
 import {
   View,
@@ -41,7 +40,7 @@ function RegisterPages() {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.19:3000/api/register",
+        `http://${IPADRESS}:3000/api/register`,
         {
           username: username,
           email:email,

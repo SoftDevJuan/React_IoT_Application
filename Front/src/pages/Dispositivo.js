@@ -7,47 +7,71 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import IPADRESS from "../../Controllers/IP_Local";
 
 const Dispositivo = () => {
-  const [userEmail, setUserEmail] = useState('');
+  const [userEmail, setUserEmail] = useState("");
   const [puertas, setPuertas] = useState([]);
 
-
   useEffect(() => {
-      // Recuperar el correo electrónico almacenado al cargar la vista
-      AsyncStorage.getItem('userEmail').then((value) => {
-          if (value !== null) {
-              setUserEmail(value);
-          }
-      });
+    // Recuperar el correo electrónico almacenado al cargar la vista
+    AsyncStorage.getItem("userEmail").then((value) => {
+      if (value !== null) {
+        setUserEmail(value);
+      }
+    });
   }, []);
 
-
   useEffect(() => {
-    const fetchData = () => {
+    const fetchData = async () => {
       try {
-        // Llamar a la API para obtener todas las puertas
-        fetch("http://192.168.1.19:3000/api/puertaNumero")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then((data) => setPuertas(data))
-        .catch((error) => console.error("Error fetching data: ", error));
+        const userEmail = await AsyncStorage.getItem("userEmail");
+
+        if (userEmail !== null) {
+          // Construir la URL con los parámetros de la cadena de consulta
+          const url = `http://${IPADRESS}:3000/api/puertaNumero?emailAdmin=${encodeURIComponent(
+            userEmail
+          )}`;
+
+          fetch(url)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => setPuertas(data))
+            .catch((error) => console.error("Error fetching data: ", error));
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
-  
+
+    // const fetchData = () => {
+    //   try {
+
+    //     // Llamar a la API para obtener todas las puertas
+    //     fetch(`http://${IPADRESS}:3000/api/puertaNumero`,
+
+    //     )
+    //     .then((response) => {
+    //       if (!response.ok) {
+    //         throw new Error('Network response was not ok');
+    //       }
+    //       return response.json();
+    //     })
+    //     .then((data) => setPuertas(data))
+    //     .catch((error) => console.error("Error fetching data: ", error));
+    //   } catch (error) {
+    //     console.error("Error fetching data: ", error);
+    //   }
+    // };
+
     const intervalId = setInterval(fetchData, 2000); // Realizar la consulta cada 2 segundos
-  
+
     return () => clearInterval(intervalId); // Limpiar el intervalo cuando el componente se desmonte
-  
   }, []);
 
   // PUT A PUERTA
@@ -57,7 +81,7 @@ const Dispositivo = () => {
     valorAlarma,
     valorActivacion
   ) => {
-    let url = `http://192.168.1.19:3000/api/puertas/${id}`;
+    let url = `http://${IPADRESS}:3000/api/puertas/${id}`;
 
     // Crea un objeto para almacenar los campos a actualizar
     let fieldsToUpdate = {};
@@ -77,7 +101,7 @@ const Dispositivo = () => {
       valorActivacion = "remota";
     }
 
-     // Añade el valor de activacion al objeto de actualización
+    // Añade el valor de activacion al objeto de actualización
     fieldsToUpdate.activacion = valorActivacion;
 
     // Configura la solicitud para encender la alarma
@@ -157,7 +181,7 @@ const Dispositivo = () => {
     </ScrollView>
   );
 };
- 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

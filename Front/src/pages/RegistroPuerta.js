@@ -1,7 +1,5 @@
 import React, { useState, useEffect  } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { Feather } from "@expo/vector-icons"; // Importar Feather Icons desde expo/vector-icons
-
+import IPADRESS from "../../Controllers/IP_Local";
 import {
   View,
   TextInput,
@@ -14,21 +12,39 @@ import {
   
 } from "react-native";
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 function RegisterPuerta() {
 
   const [numero, setNumero] = useState("");
   const [idPuerta, setIdPuerta] = useState("");
-  
+  const [userEmail, setUserEmail] = useState('');
+  const [usuarios, setUsuarios] = useState([]); // Nuevo estado para almacenar los usuarios y sus rfid_id
+  const [nuevoUsuario, setNuevoUsuario] = useState(""); // Estado para almacenar el nuevo usuario
+
+
+  useEffect(() => {
+      // Recuperar el correo electrónico almacenado al cargar la vista
+      AsyncStorage.getItem('userEmail').then((value) => {
+          if (value !== null) {
+              setUserEmail(value);
+              console.log("Valor de userEmail:", value); 
+          }
+      });
+  }, []);
 
   const handleRegister = async () => {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.19:3000/api/puertasForm",
+        `http://${IPADRESS}:3000/api/puertasForm`,
         {
+
           numero: numero,
-          idPuerta:idPuerta
+          idPuerta:idPuerta,
+          emailAdmin: userEmail,
+          usuarios: usuarios 
         }
       );
 
@@ -36,6 +52,7 @@ function RegisterPuerta() {
       console.log("ID del la puerta:", response.data.id);
       console.log("numero de puerta:", response.data.numero);
       console.log("idPuerta de puerta: ", response.data.idPuerta);
+      console.log("UserAdmin de puerta: ", response.data.userEmail);
     
       
 
@@ -56,6 +73,12 @@ function RegisterPuerta() {
     }
   };
 
+  const agregarUsuario = () => {
+    setUsuarios([...usuarios, { rfid_id: nuevoUsuario }]);
+    setNuevoUsuario("");
+    
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.contenido}>
@@ -74,7 +97,21 @@ function RegisterPuerta() {
           onChangeText={setIdPuerta}
           keyboardType="numeric"
           value={idPuerta}
+          // value={"gate_oo1"}
         />
+
+         {/* Nuevo campo de entrada para el rfid_id del usuario */}
+         <Text style={styles.label}>Usuarios</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Usuarios Permitidos"
+          onChangeText={setNuevoUsuario}
+          value={nuevoUsuario}
+        />
+        {/* Botón para agregar el nuevo usuario */}
+        <TouchableOpacity onPress={agregarUsuario} style={styles.btnAgregarUsuario}>
+          <Text style={styles.btnTextoAgregar}>Agregar Usuario</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={handleRegister} style={styles.btnRegistrar}>
           <Text style={styles.btnTexto}>Registrar</Text>
@@ -117,10 +154,21 @@ const styles = StyleSheet.create({
   },
   btnRegistrar: {
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 30,
     marginBottom: 40,
     marginLeft: 40,
     marginRight: 40,
+    backgroundColor: "#0d1323",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  btnAgregarUsuario:{
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 55,
+    marginRight: 55,
     backgroundColor: "#0d1323",
     borderRadius: 10,
     paddingVertical: 10,
@@ -130,7 +178,14 @@ const styles = StyleSheet.create({
     color: "#ebd7be",
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: 23,
+    fontSize: 28,
+    textTransform:"uppercase"
+  },
+  btnTextoAgregar:{
+    color: "#ebd7be",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 20,
     textTransform:"uppercase"
   },
   accesoInputContainer: {

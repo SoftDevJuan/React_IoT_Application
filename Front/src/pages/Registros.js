@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, StyleSheet, Animated } from "react-native";
+import { 
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Animated,
+} from "react-native";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import IPADRESS from "../../Controllers/IP_Local";
 
 function Registros() {
   const [movimientos, setMovimientos] = useState([]);
@@ -32,12 +38,14 @@ function Registros() {
     // Limpio el intervalo cuando el componente se desmonta
     return () => clearInterval(intervalId);
   }, []);
+
+
   const fetchMovimientos = async () => {
     try {
       const userEmail = await AsyncStorage.getItem('userEmail');
       if (userEmail !== null) {
         const response = await axios.get(
-          "http://192.168.1.19:3000/api/getMovimientos",
+          `http://${IPADRESS}:3000/api/getMovimientos`,
           { params: { emailAdmin: userEmail } }
         );
         setMovimientos(response.data);
@@ -57,7 +65,7 @@ function Registros() {
       const userEmail = await AsyncStorage.getItem('userEmail');
       if (userEmail !== null) {
         const response = await axios.get(
-          "http://192.168.1.19:3000/api/getUsuarios",
+          `http://${IPADRESS}:3000/api/getUsuarios`,
           { params: { emailAdmin: userEmail } }
         );
         setUsuarios(response.data);
