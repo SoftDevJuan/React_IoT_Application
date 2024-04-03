@@ -31,11 +31,10 @@ export const consultaPuerta = (req, res) => {
   const { numeroPuerta } = req.params; 
   
   Puerta 
-      .find({ numero: numeroPuerta})
+      .find({ idPuerta: numeroPuerta})
       .then((resultados) => {
         if (resultados.length === 0) {
-          console.log(resultados.length);
-          console.log("aver we");
+          console.log("error en consultarPuerta get");
           // No se encontraron documentos, enviar "Denegado" como respuesta
           res.json("no existe la puerta");
           
@@ -55,16 +54,42 @@ export const consultaPuerta = (req, res) => {
 
 
 
-export const consultaRFID = async (req, res) => {
+export const consultarAcceso = async (req, res) => {
   try {
-      const { rfid } = req.params;
-      const puertas = await usuario.find({ rfid: rfid }, { puerta: 1, _id: 0 }).exec();
-      res.json(puertas);
+    // Extraer el RFID y el ID de la puerta de los parámetros de la URL
+    const { rfid, gate_id } = req.query;
+
+    // Buscar en la base de datos si hay un usuario con el RFID proporcionado
+    const usuarioEncontrado = await usuario.findOne({ rfid }).exec(); // Cambiar Usuario a usuario
+
+    if (usuarioEncontrado) {
+      // Verificar si el usuario tiene puertas asignadas
+      if (usuarioEncontrado.puerta && usuarioEncontrado.puerta.length > 0) {
+        // Si se encuentra un usuario con el RFID proporcionado, verificar si tiene acceso a la puerta con el ID proporcionado
+        const puertaEncontrada = usuarioEncontrado.puerta.find(puerta => puerta.puerta_id === gate_id);
+
+        if (puertaEncontrada) {
+          // Si se encuentra una coincidencia, el usuario tiene acceso a la puerta
+          res.json({ access: 'Permitido' });
+        } else {
+          // Si no se encuentra ninguna coincidencia, el usuario no tiene acceso a la puerta
+          res.json({ access: 'Denegado' });
+        }
+      } else {
+        // Si el usuario no tiene puertas asignadas, el acceso se niega
+        res.json({ access: 'Denegado' });
+      }
+    } else {
+      // Si no se encuentra ningún usuario con el RFID proporcionado, el acceso se niega
+      res.json({ access: 'Denegado' });
+    }
   } catch (error) {
-      console.error('Error al consultar las puertas:', error);
-      res.status(500).json({ message: 'Error interno del servidor' });
+    // Manejo de errores
+    console.error('Error al consultar el acceso:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
+
 
 
 
@@ -75,11 +100,10 @@ export const consultaAlarma = (req, res) => {
   const { numeroPuerta } = req.params; // Corrección aquí
   
   Puerta // Esto está incorrecto, deberías utilizar tu modelo de Mongoose
-      .find({ numero: numeroPuerta})
+      .find({ idPuerta: numeroPuerta})
       .then((resultados) => {
         if (resultados.length === 0) {
-          console.log(resultados.length);
-          console.log("aver we");
+          console.log("error en consultarAlarma");
           // No se encontraron documentos, enviar "Denegado" como respuesta
           res.json("no existe la puerta");
           
@@ -104,11 +128,10 @@ export const buscarAccesoPuerta = (req, res) => {
   const { numeroPuerta } = req.params; // Corrección aquí
   
   Puerta // Esto está incorrecto, deberías utilizar tu modelo de Mongoose
-      .find({ numero: numeroPuerta})
+      .find({ idPuerta: numeroPuerta})
       .then((resultados) => {
         if (resultados.length === 0) {
-          console.log(resultados.length);
-          console.log("aver we");
+          console.log("error en buscarAcessoPuerta");
           // No se encontraron documentos, enviar "Denegado" como respuesta
           res.json("no existe la puerta");
           
@@ -155,12 +178,12 @@ export const buscarAccesoPuerta = (req, res) => {
   // esta direccion es para mandar a cerrar la puerta una vez que se haya accesado de manera fisica
   //es decir se ejecuta justo despues de que se accesa con gafete, esto para no dejar la puerta abierta y hacer el registro en la db del estado cerrado de la puerta
   export const cerrarPuerta = async (req, res) => {
-    const { numeroPuerta } = req.params;
-    const { acceso, status } = req.body;
+    const { puerta_id } = req.params;
+    const { acceso, status, activacion } = req.body;
 
     try {
         // Buscar la puerta por el número proporcionado
-        let puertaEncontrada = await Puerta.findOne({ numero: numeroPuerta });
+        let puertaEncontrada = await Puerta.findOne({ idPuerta: puerta_id });
 
         // Verificar si se encontró la puerta
         if (!puertaEncontrada) {
@@ -174,6 +197,9 @@ export const buscarAccesoPuerta = (req, res) => {
         if (status) {
             puertaEncontrada.status = status;
         }
+        if (activacion) {
+          puertaEncontrada.activacion = activacion;
+      }
 
         // Guardar los cambios
         await puertaEncontrada.save();
@@ -230,12 +256,12 @@ export const actualizarAlarma = async (req, res) => {
 
 
 export const controlarPuerta = async (req, res) => {
-  const { numeroPuerta } = req.params;
-    const { status, activacion } = req.body;
+  const { puerta_id } = req.params;
+    const { status, activacion} = req.body;
 
     try {
         // Buscar la puerta por el número proporcionado
-        let puertaEncontrada = await Puerta.findOne({ numero: numeroPuerta });
+        let puertaEncontrada = await Puerta.findOne({ idPuerta: puerta_id });
 
         // Verificar si se encontró la puerta
         if (!puertaEncontrada) {
@@ -243,7 +269,7 @@ export const controlarPuerta = async (req, res) => {
         }
 
         // Actualizar los datos de la puerta
-        if (puerta) {
+        if (status) {
             puertaEncontrada.status = status;
         }
         if (activacion) {
@@ -260,6 +286,43 @@ export const controlarPuerta = async (req, res) => {
         res.status(500).json({ message: "Error interno del servidor" });
     }
 };
+
+
+export const abrirPuerta = async (req, res) => {
+  const { puerta_id } = req.params;
+    const { status, activacion, acceso } = req.body;
+
+    try {
+        // Buscar la puerta por el número proporcionado
+        let puertaEncontrada = await Puerta.findOne({ idPuerta: puerta_id });
+
+        // Verificar si se encontró la puerta
+        if (!puertaEncontrada) {
+            return res.status(404).json({ message: "Puerta no encontrada" });
+        }
+
+        // Actualizar los datos de la puerta
+        if (status) {
+            puertaEncontrada.status = status;
+        }
+        if (activacion) {
+            puertaEncontrada.activacion = activacion;
+        }if (acceso) {
+          puertaEncontrada.acceso = acceso;
+      }
+        
+
+        // Guardar los cambios
+        await puertaEncontrada.save();
+
+        // Devolver la puerta actualizada
+        res.status(200).json(puertaEncontrada);
+    } catch (error) {
+        console.error("Error al actualizar la puerta:", error);
+        res.status(500).json({ message: "Error interno del servidor" });
+    }
+};
+
 
 
 

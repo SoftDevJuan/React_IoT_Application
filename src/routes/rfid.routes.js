@@ -4,10 +4,11 @@ const router = Router();
 import {
     registrarIntento,
     consultaPuerta,
-    consultaRFID,
+    consultarAcceso,
     consultaAlarma,
     buscarAccesoPuerta,
     cerrarPuerta,
+    abrirPuerta,
     actualizarAlarma,
     controlarPuerta,
     
@@ -21,7 +22,7 @@ router.post('/registrarintento', registrarIntento);
 
 // Rutas GET
 router.get('/consultaPuerta/:numeroPuerta', consultaPuerta);
-router.get('/consultaRFID/:rfid', consultaRFID);
+router.get('/consultarAcceso/', consultarAcceso);
 router.get('/alarma/:numeroPuerta', consultaAlarma);
 router.get('/controlarPuerta/:numeroPuerta', buscarAccesoPuerta);
 
@@ -29,7 +30,8 @@ router.get('/controlarPuerta/:numeroPuerta', buscarAccesoPuerta);
 //router.put('/registrosRFIDes/:numeroPuerta', actualizarRegistroRFID); / Asigna la función controladora correspondiente
 
 // Rutas PATCH
-router.patch('/cerrarPuerta/:numeroPuerta', cerrarPuerta);
+router.patch('/cerrarPuerta/:puerta_id', cerrarPuerta);
+router.patch('/abrirPuerta/:puerta_id', abrirPuerta);
 router.patch('/alarma/:numeroPuerta', actualizarAlarma);
 router.patch('/controlarPuerta/:numeroPuerta', controlarPuerta);
 
