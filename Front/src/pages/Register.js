@@ -54,22 +54,31 @@ function RegisterPages() {
         }
       );
 
-      console.log("Respuesta del servidor:", response.data);
+      console.log("Respuesta del servidor:", response);
       console.log("ID del usuario:", response.data.id);
       console.log("Nombre de usuario:", response.data.username);
       console.log("Correo electrónico:", response.data.email);
       console.log("RFID:", response.data.rfid);
       console.log("Puerta:", response.data.puerta);
 
+      
+    if (response.status === 200) {
+      // Registro exitoso
       setUsername("");
       setEmail("");
       setRFID("");
       setPuerta("");
-
       Alert.alert(
         "Registro exitoso",
         "¡Tu cuenta ha sido registrada con éxito!"
       );
+    } if (response.status === 400) {
+      // Error al registrar
+      Alert.alert(
+        "Error de registro",
+        response.data.message // Mostrar el mensaje de error del servidor
+      );
+    }
     } catch (error) {
       console.error("Error al enviar datos al servidor:", error.message);
       Alert.alert(

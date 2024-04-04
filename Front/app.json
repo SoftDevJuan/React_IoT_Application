@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Front",
+    "name": "Vita",
     "slug": "Front",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/VitaIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.leonardo2720.Front"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "51fd7d1b-9092-43ba-8f20-12e24ad1ca6c"
+      }
     }
   }
 }
