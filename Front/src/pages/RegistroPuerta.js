@@ -1,5 +1,5 @@
 import React, { useState, useEffect  } from "react";
-import IPADRESS from "../../Controllers/IP_Local";
+import IPADRESS from "../../Config/IP_Local";
 import {
   View,
   TextInput,

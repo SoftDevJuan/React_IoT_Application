@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons"; // Importar Feather Icons desde expo/vector-icons
-import IPADRESS from "../../Controllers/IP_Local";
+import IPADRESS from "../../Config/IP_Local";
 import {
   View,
   TextInput,

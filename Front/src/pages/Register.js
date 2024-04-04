@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import IPADRESS  from "../../Controllers/IP_Local"
+import IPADRESS  from "../../Config/IP_Local"
 
 import {
   View,
@@ -18,10 +18,14 @@ function RegisterPages() {
     const [userEmail, setUserEmail] = useState('');
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
-    const [puerta, setPuerta] = useState("");
+    // const [puerta, setPuerta] = useState("");
     const [RFID, setRFID] = useState("");
     const [secureTextEntry, setSecureTextEntry] = useState(true); // Estado para controlar si se muestra o no la contraseña
-  
+
+    const [puerta, setPuerta] = useState([]); // Nuevo estado para almacenar los usuarios y sus rfid_id
+    const [nuevaPuerta, setNuevaPuerta] = useState(""); // Estado para almacenar el nuevo usuario
+
+
     useEffect(() => {
         // Recuperar el correo electrónico almacenado al cargar la vista
         AsyncStorage.getItem('userEmail').then((value) => {
@@ -59,7 +63,6 @@ function RegisterPages() {
 
       setUsername("");
       setEmail("");
-      // setPassword("");
       setRFID("");
       setPuerta("");
 
@@ -74,6 +77,12 @@ function RegisterPages() {
         "Hubo un problema al registrar la cuenta. Por favor, intenta nuevamente."
       );
     }
+  };
+
+  const agregarPuerta = () => {
+    setPuerta([...puerta, { puerta_id: nuevaPuerta }]);
+    setNuevaPuerta("");
+    
   };
 
   return (
@@ -104,14 +113,20 @@ function RegisterPages() {
           keyboardType="default"
           value={RFID}
         />
+
         <Text style={styles.label}>Puerta</Text>
         <TextInput
           style={styles.input}
           placeholder="puerta"
-          onChangeText={setPuerta}
-          keyboardType="numeric"
-          value={puerta}
+          onChangeText={setNuevaPuerta}
+          keyboardType="default"
+          value={nuevaPuerta}
         />
+
+        {/* Botón para agregar el nuevo puerta */}
+        <TouchableOpacity onPress={agregarPuerta} style={styles.btnAgregarUsuario}>
+          <Text style={styles.btnTextoAgregar}>Agregar Puertas</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={handleRegister} style={styles.btnRegistrar}>
           <Text style={styles.btnTexto}>Registrar</Text>
@@ -161,6 +176,24 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
+  },
+  btnAgregarUsuario:{
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 55,
+    marginRight: 55,
+    backgroundColor: "#0d1323",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  btnTextoAgregar:{
+    color: "#ebd7be",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 20,
+    textTransform:"uppercase"
   },
   btnTexto: {
     color: "#ebd7be",

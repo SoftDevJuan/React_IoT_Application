@@ -16,7 +16,7 @@ export const getUsuarios = async (req, res) => {
     const usuarios = await User.find({ emailAdmin: emailAdmin });
 
     if (!usuarios || usuarios.length === 0) {
-      return res.status(404).json({ message: "No se encontraron usuarios." });
+      return res.status(200).json([]); // Devuelve un array vacío
     }
     res.status(200).json(usuarios);
   } catch (error) {
@@ -24,6 +24,25 @@ export const getUsuarios = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor." });
   }
 };
+
+export const getUsuarioAdmin = async (req, res) => {
+  try {
+    
+    const emailAdmin = req.query.emailAdmin; 
+
+    // Obtener solo los usuarios que tienen el emailAdmin correspondiente
+    const usuarios = await UserAdmin.find({ emailAdmin: emailAdmin });
+
+    if (!usuarios || usuarios.length === 0) {
+      return res.status(200).json([]); // Devuelve un array vacío
+    }
+    res.status(200).json(usuarios);
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    res.status(500).json({ message: "Error interno del servidor." });
+  }
+};
+
 
 
 export const register = async (req, res) => {
