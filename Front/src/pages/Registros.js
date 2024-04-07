@@ -55,12 +55,14 @@ function Registros() {
           `${IPADRESS}api/getMovimientos`,
           { params: { emailAdmin: userEmail } }
         );
-        setMovimientos(response.data);
-        Animated.timing(fadeAnimMovimientos, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }).start();
+        if (response.data.length > 0) {
+          setMovimientos(response.data);
+          Animated.timing(fadeAnimMovimientos, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }).start();
+        }
       }
     } catch (error) {
       console.error("Error al obtener movimientos:", error);
@@ -97,10 +99,10 @@ function Registros() {
     const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
 
     return (
-      <Animated.View style={[styles.row, { opacity: fadeAnimMovimientos }]}>
-        <Text style={styles.dataText}>{item.username}</Text>
-        <Text style={styles.dataText}>{fechaFormateada}</Text>
-        <Text style={styles.dataText}>{item.puerta}</Text>
+      <Animated.View style={[styles.rowMovimientos, { opacity: fadeAnimMovimientos }]}>
+        <Text style={styles.dataTextMovimientos}>{item.username}</Text>
+        <Text style={styles.dataTextMovimientos}>{fechaFormateada}</Text>
+        <Text style={styles.dataTextMovimientos}>{item.puerta}</Text>
       </Animated.View>
     );
   };
@@ -168,9 +170,9 @@ function Registros() {
 
   const renderMovimientoHeader = () => (
     <View style={styles.header}>
-      <Text style={styles.headerText}>Nombre</Text>
-      <Text style={styles.headerText}>Fecha</Text>
-      <Text style={styles.headerText}>Puerta</Text>
+      <Text style={styles.headerTextMovimientos}>Nombre</Text>
+      <Text style={styles.headerTextMovimientos}>Fecha</Text>
+      <Text style={styles.headerTextMovimientos}>Puerta</Text>
     </View>
   );
 
@@ -207,7 +209,9 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     paddingHorizontal: 20,
-    marginBottom: 5,
+    marginBottom: 2,
+    marginTop:2,
+    
   },
   header: {
     flexDirection: "row",
@@ -221,6 +225,13 @@ const styles = StyleSheet.create({
     marginBottom: 3,
     textAlign: "center",
     flex: 0.5,
+  },
+  headerTextMovimientos:{
+    fontWeight: "900",
+    fontSize: 17,
+    marginBottom: 3,
+    textAlign: "center",
+    flex: 1,
   },
   titulo: {
     textAlign: "center",
@@ -247,6 +258,23 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     position: "relative", // Posición relativa para el contenedor de cada registro
   },
+  rowMovimientos:{
+    flexDirection: "row",
+    alignItems: "center", // Alinear los elementos verticalmente
+    padding: 5,
+    marginBottom: 10,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    elevation: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 10,
+      height: 20,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 3.84,
+    position: "relative",
+  },
   rowData: {
     flexDirection: "row",
     alignItems: "center",
@@ -260,6 +288,13 @@ const styles = StyleSheet.create({
     color: "#333",
     textAlign: "right",
     flex: 1, // Usa flex: 1 para que el texto ocupe todo el espacio disponible
+  },
+  dataTextMovimientos:{
+    fontSize: 16,
+    fontWeight: "900",
+    color: "#333",
+    textAlign: "center",
+    flex: 1,
   },
   deleteButton: {
     width: 30,

@@ -29,6 +29,7 @@ import {
 } from "../NoUsar/componentesController.js"
 
 import {
+    borrrarPuerta,
     crearPuerta,
     crearPuertaForm,
     getAllPuertas,
@@ -69,7 +70,8 @@ router.get('/puertas', getAllPuertas);
 router.get('/puertaNumero',getPuertaByNumero)
 router.post('/puertas', crearPuerta);
 router.post('/puertasForm', crearPuertaForm);
-router.put('/puertas/:id', updatePuerta);
+router.put('/puertas', updatePuerta);
+router.delete('/borrarPuerta/:_id', borrrarPuerta);
 
 
 export default router;

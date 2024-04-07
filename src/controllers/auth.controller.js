@@ -25,6 +25,7 @@ export const getUsuarios = async (req, res) => {
   }
 };
 
+
 export const getUsuarioAdmin = async (req, res) => {
   try {
     
@@ -89,9 +90,6 @@ export const actualizarUsuario = async (req, res) => {
     rfid: ${rfid}
     puerta ${puerta} 
   `)
-
-
-
   try {
     let updatedUser;
 
@@ -141,9 +139,6 @@ export const borrrarUsuario = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
-
-
-
 
 
 
