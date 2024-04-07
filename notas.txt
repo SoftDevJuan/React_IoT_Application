@@ -58,4 +58,4 @@ eas init --id 1854ca10-ed96-422b-b946-11535d94725e
 
 creamos el proyecto en expo y metemos el comando con el id que nos proporciona 
 
-eas build -p android -profile preview
+eas build -p android --profile preview
