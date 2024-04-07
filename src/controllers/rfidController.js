@@ -1,7 +1,7 @@
 import Router from "express";
-import registrosRFID from '../models/registrosRFID';
-import Puerta from '../models/puerta';
-import usuario from '../models/user.model';
+import registrosRFID from '../models/registrosRFID.js';
+import Puerta from '../models/puerta.js';
+import usuario from '../models/user.model.js';
 const router = Router();
 
 
