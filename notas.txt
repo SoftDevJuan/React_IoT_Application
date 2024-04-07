@@ -48,3 +48,14 @@ npm install -g expo-cli
 
 https://expo.dev/artifacts/eas/xnnTe3Jm4ZpKTaNQh2dPqk.aab
 Build details: https://expo.dev/accounts/leonardo2720/projects/Front/builds/fe076753-e5a1-4895-8bb5-757bea7a8a0f
+
+
+npm install -g eas-cli
+eas login
+eas whoami
+
+eas init --id 1854ca10-ed96-422b-b946-11535d94725e
+
+creamos el proyecto en expo y metemos el comando con el id que nos proporciona 
+
+eas build -p android -profile preview

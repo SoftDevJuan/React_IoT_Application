@@ -13,7 +13,6 @@ export const Movimientos  = async (req, res) => {
 export const getMovimientos = async (req, res) => {
   try {
     const emailAdmin = req.query.emailAdmin; // Acceder al parámetro emailAdmin a través de req.query
-    console.log("Valor de emailAdmin:", emailAdmin); 
     
     // const movimientos = await movimientosModel.find().sort({ createdAt: -1 }).limit(10);
      // Obtener solo los movimientos que tienen el emailAdmin correspondiente
@@ -21,6 +20,7 @@ export const getMovimientos = async (req, res) => {
     if (!movimientos || movimientos.length === 0) {
       return res.status(200).json([]); // Devuelve un array vacío
     }
+    // res.status(200).json(movimientos);
     // Mapear los movimientos para devolver solo los campos requeridos
     const mappedMovimientos = movimientos.map(movimiento => ({
       username: movimiento.username,

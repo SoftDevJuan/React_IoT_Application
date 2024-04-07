@@ -9,8 +9,16 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import IPADRESS from "../../Config/IP_Local";
+import { MaterialIcons } from "@expo/vector-icons";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import axios from "axios";
+
+
 
 const Dispositivo = () => {
+
+  const navigation = useNavigation();
+
   const [userEmail, setUserEmail] = useState("");
   const [puertas, setPuertas] = useState([]);
 
@@ -30,7 +38,7 @@ const Dispositivo = () => {
 
         if (userEmail !== null) {
           // Construir la URL con los parámetros de la cadena de consulta
-          const url = `http://${IPADRESS}:3000/api/puertaNumero?emailAdmin=${encodeURIComponent(
+          const url = `${IPADRESS}api/puertaNumero?emailAdmin=${encodeURIComponent(
             userEmail
           )}`;
 
@@ -49,26 +57,6 @@ const Dispositivo = () => {
       }
     };
 
-    // const fetchData = () => {
-    //   try {
-
-    //     // Llamar a la API para obtener todas las puertas
-    //     fetch(`http://${IPADRESS}:3000/api/puertaNumero`,
-
-    //     )
-    //     .then((response) => {
-    //       if (!response.ok) {
-    //         throw new Error('Network response was not ok');
-    //       }
-    //       return response.json();
-    //     })
-    //     .then((data) => setPuertas(data))
-    //     .catch((error) => console.error("Error fetching data: ", error));
-    //   } catch (error) {
-    //     console.error("Error fetching data: ", error);
-    //   }
-    // };
-
     const intervalId = setInterval(fetchData, 2000); // Realizar la consulta cada 2 segundos
 
     return () => clearInterval(intervalId); // Limpiar el intervalo cuando el componente se desmonte
@@ -81,7 +69,7 @@ const Dispositivo = () => {
     valorAlarma,
     valorActivacion
   ) => {
-    let url = `http://${IPADRESS}:3000/api/puertas/${id}`;
+    let url = `${IPADRESS}api/puertas/${id}`;
 
     // Crea un objeto para almacenar los campos a actualizar
     let fieldsToUpdate = {};
@@ -136,6 +124,17 @@ const Dispositivo = () => {
     const valorStatus = action === "abrir" ? true : false;
     statusPuerta(puerta._id, valorStatus, null);
   };
+  const deletePuerta = async (_id) => {
+    try {
+      const response = await axios.delete(
+        `${IPADRESS}api/borrarPuerta/${_id}`
+      );
+      Alert.alert("Puerta Eliminada");
+      
+    } catch (error) {
+      console.error("Error al eliminar Puerta:", error);
+    }
+  };
 
   return (
     <ScrollView>
@@ -174,6 +173,29 @@ const Dispositivo = () => {
                   <Text style={styles.buttonText}>Cerrar</Text>
                 </TouchableOpacity>
               </View>
+            </View>
+
+            <View style={styles.bottomButtonsContainer}>
+              <TouchableOpacity 
+              style={styles.iconButton}
+              onLongPress={() => deletePuerta(puerta._id)}
+              >
+              <MaterialIcons name="delete" size={24} color="red" />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.iconButton}
+             onPress={() =>
+              navigation.navigate("EditarPuerta", {
+                _id: puerta._id,
+                numeroPuerta: puerta.numero,
+                usuarios: puerta.usuarios,
+                id_Puerta: puerta.idPuerta
+                
+              })
+             
+              }>
+                <MaterialIcons name="edit" size={24} color="blue" />
+              </TouchableOpacity>
             </View>
           </View>
         ))}
@@ -236,6 +258,25 @@ const styles = StyleSheet.create({
     color: "#ebd7be",
     textAlign: "center",
     textTransform: "uppercase",
+  },
+  bottomButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 5,
+    marginBottom:15,
+    marginLeft:40,
+    marginRight:40,
+
+  },
+  iconButton: {
+    padding: 20,
+    borderRadius: 20,
+    backgroundColor: "#f5f5f5",
+    borderColor:"#212121",
+    borderWidth: 5, // Ancho del borde
+    marginHorizontal: 5,
+    marginLeft:30,
+    marginRight:30,
   },
 });
 

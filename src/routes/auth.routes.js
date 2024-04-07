@@ -8,6 +8,8 @@ import {
     getUsuarios,
     registerAdmin,
     getUsuarioAdmin,
+    actualizarUsuario,
+    borrrarUsuario,
 } from "../controllers/auth.controller.js";
 
 import { authRequired } from "../middlewares/validateToken.js";
@@ -27,6 +29,7 @@ import {
 } from "../NoUsar/componentesController.js"
 
 import {
+    borrrarPuerta,
     crearPuerta,
     crearPuertaForm,
     getAllPuertas,
@@ -40,6 +43,11 @@ router.post("/register", register);
 router.post("/registerAdmin", registerAdmin);
 router.get("/getUsuarios", getUsuarios);
 router.get("/getUsuaioAdmin", getUsuarioAdmin);
+router.post('/actualizarUsuario', actualizarUsuario);
+router.delete('/borrrarUsuario/:email', borrrarUsuario );
+
+
+
 router.post("/login", login);
 router.post("/logout", logout);
 router.get("/profile",authRequired , profile );
@@ -62,7 +70,8 @@ router.get('/puertas', getAllPuertas);
 router.get('/puertaNumero',getPuertaByNumero)
 router.post('/puertas', crearPuerta);
 router.post('/puertasForm', crearPuertaForm);
-router.put('/puertas/:id', updatePuerta);
+router.put('/puertas', updatePuerta);
+router.delete('/borrarPuerta/:_id', borrrarPuerta);
 
 
 export default router;

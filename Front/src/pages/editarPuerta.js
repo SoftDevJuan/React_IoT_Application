@@ -13,17 +13,40 @@ import {
 } from "react-native";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from "@react-navigation/native";
 
 
-function RegisterPuerta() {
+function EditarPuerta({route}) {
 
-  const [numero, setNumero] = useState("");
-  const [idPuerta, setIdPuerta] = useState("");
+ const navigation = useNavigation();
+
+ const { _id, numeroPuerta, usuarios, id_Puerta } = route.params; 
+
+
+
+ console.log(`
+    _id: ${_id}
+    numero: ${numeroPuerta}
+    id_puerta: ${id_Puerta}
+    usuarios: ${usuarios}
+  `)
+
+  const [numeroPuertaInput, setNumeroPuertaInput] = useState('');
+  const [idPuerta, setIdPuerta] = useState('');
   const [userEmail, setUserEmail] = useState('');
-  const [usuarios, setUsuarios] = useState([]); // Nuevo estado para almacenar los usuarios y sus rfid_id
-  const [nuevoUsuario, setNuevoUsuario] = useState(""); // Estado para almacenar el nuevo usuario
+  const [usuariosPuerta, setUsuariosPuerta] = useState([]); // Nuevo estado para almacenar los usuarios y sus rfid_id
+  const [nuevoUsuario, setNuevoUsuario] = useState(""); // Estado 
 
 
+  useEffect(() => {
+
+    setNumeroPuertaInput(numeroPuerta.toString());
+    setIdPuerta(id_Puerta.toString());
+    setUsuariosPuerta(usuarios);
+    
+  }, [numeroPuerta, id_Puerta, usuarios]);
+
+//   RECUPERAR EL EMAIL DEL ADMIN
   useEffect(() => {
       // Recuperar el correo electrónico almacenado al cargar la vista
       AsyncStorage.getItem('userEmail').then((value) => {
@@ -34,48 +57,63 @@ function RegisterPuerta() {
       });
   }, []);
 
-  const handleRegister = async () => {
+
+  const handleEdit = async () => {
+
+      // Convertir usuariosPuerta a un arreglo de objetos antes de enviarlo al servidor
+      const usuariosArray = usuariosPuerta.map(usuario => ({ rfid_id: usuario.rfid_id }));
 
     try {
-      const response = await axios.post(
-        `${IPADRESS}api/puertasForm`,
+      const response = await axios.put(
+        `${IPADRESS}api/puertas`,
         {
-
-          numero: numero,
-          idPuerta:idPuerta,
-          emailAdmin: userEmail,
-          usuarios: usuarios 
-        }
+            _id: _id,
+            numeroPuerta: numeroPuertaInput,
+            idPuerta: idPuerta,
+            emailAdmin: userEmail,
+            usuarios:usuariosArray
+          }
+         
       );
+            
+      if (response.status === 200) {
+        console.log(`
+        DATOS ENVIADOS::::
+        _id: ${_id}
+        numero: ${numeroPuertaInput}
+        id_puerta: ${idPuerta}
+        usuarios: ${usuarios}
+        `)
 
-      console.log("Respuesta del servidor:", response.data);
-      console.log("ID del la puerta:", response.data.id);
-      console.log("numero de puerta:", response.data.numero);
-      console.log("idPuerta de puerta: ", response.data.idPuerta);
-      console.log("UserAdmin de puerta: ", response.data.userEmail);
-    
+        console.log("RESPUESTA DEL SERVIDOR:", response.data); 
+
+        setNumeroPuertaInput("");
+        setIdPuerta("");
+        setUsuariosPuerta([]);
+        Alert.alert(
+          `Puerta ${numeroPuertaInput} actualizada`
+        );
+        navigation.navigate('Principal');
+      } else if (response.status === 400) {
+        Alert.alert(
+          "Error al actualizar Puerta",
+          response.data.message 
+        );
+      }
       
-
-      setNumero("");
-      setIdPuerta("");
-      
-      Alert.alert(
-        "Registro exitoso",
-        "¡Tu Puerta ha sido registrada con éxito!"
-      );
-
     } catch (error) {
       console.error("Error al enviar datos al servidor:", error.message);
       Alert.alert(
-        "Error de registro",
-        "Hubo un problema al registrar la Puerta. Por favor, intenta nuevamente."
+        "Error de Actualizacion"
       );
     }
   };
 
   const agregarUsuario = () => {
-    setUsuarios([...usuarios, { rfid_id: nuevoUsuario }]);
+    // setUsuariosPuerta([...usuarios, { rfid_id: nuevoUsuario }]);
+    setUsuariosPuerta([...usuariosPuerta, { rfid_id: nuevoUsuario }]);
     setNuevoUsuario("");
+    
     
   };
 
@@ -84,20 +122,19 @@ function RegisterPuerta() {
       <View style={styles.contenido}>
       <Text style={styles.label}>Numero</Text>
         <TextInput
-          style={styles.input}
-          placeholder="Numero de Puerta"
-          onChangeText={setNumero}
-          keyboardType="numeric"
-          value={numero}
+         style={styles.input}
+         placeholder="Numero de Puerta"
+         onChangeText={setNumeroPuertaInput}
+         keyboardType="default"
+         value={numeroPuertaInput}
         />
         <Text style={styles.label}>ID Puerta</Text>
         <TextInput
           style={styles.input}
           placeholder="ID de la Puerta"
           onChangeText={setIdPuerta}
-          keyboardType="numeric"
+          keyboardType="default"
           value={idPuerta}
-          // value={"gate_oo1"}
         />
 
          {/* Nuevo campo de entrada para el rfid_id del usuario */}
@@ -108,13 +145,13 @@ function RegisterPuerta() {
           onChangeText={setNuevoUsuario}
           value={nuevoUsuario}
         />
-        {/* Botón para agregar el nuevo usuario */}
+        
         <TouchableOpacity onPress={agregarUsuario} style={styles.btnAgregarUsuario}>
           <Text style={styles.btnTextoAgregar}>Agregar Usuario</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleRegister} style={styles.btnRegistrar}>
-          <Text style={styles.btnTexto}>Registrar</Text>
+        <TouchableOpacity onPress={handleEdit} style={styles.btnRegistrar}>
+          <Text style={styles.btnTexto}>Actualizar</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -213,4 +250,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterPuerta;
+export default EditarPuerta;

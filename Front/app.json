@@ -1,13 +1,13 @@
 {
   "expo": {
     "name": "Vita",
-    "slug": "Front",
+    "slug": "vita",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/VitaIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/VitaIcon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,18 +19,19 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/VitaIcon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.leonardo2720.Front"
+      "package": "com.leonardo2720.vita"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/VitaIcon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "51fd7d1b-9092-43ba-8f20-12e24ad1ca6c"
+        "projectId": "734ca643-2bcb-463c-a12e-21fb9a1a96c1"
       }
-    }
+    },
+    "owner": "leonardo2720"
   }
 }
