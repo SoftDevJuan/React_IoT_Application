@@ -19,7 +19,7 @@ const LoginForm = () => {
 
   const handleLogin = () => {
     // Enviar datos a la API
-    fetch(`http://${IPADRESS}:3000/api/login`, {
+    fetch(`${IPADRESS}api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

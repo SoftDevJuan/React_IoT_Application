@@ -30,7 +30,7 @@ const Dispositivo = () => {
 
         if (userEmail !== null) {
           // Construir la URL con los parámetros de la cadena de consulta
-          const url = `http://${IPADRESS}:3000/api/puertaNumero?emailAdmin=${encodeURIComponent(
+          const url = `${IPADRESS}api/puertaNumero?emailAdmin=${encodeURIComponent(
             userEmail
           )}`;
 
@@ -81,7 +81,7 @@ const Dispositivo = () => {
     valorAlarma,
     valorActivacion
   ) => {
-    let url = `http://${IPADRESS}:3000/api/puertas/${id}`;
+    let url = `${IPADRESS}api/puertas/${id}`;
 
     // Crea un objeto para almacenar los campos a actualizar
     let fieldsToUpdate = {};

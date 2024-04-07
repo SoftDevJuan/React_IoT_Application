@@ -38,7 +38,7 @@ function RegisterPuerta() {
 
     try {
       const response = await axios.post(
-        `http://${IPADRESS}:3000/api/puertasForm`,
+        `${IPADRESS}api/puertasForm`,
         {
 
           numero: numero,

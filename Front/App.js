@@ -7,6 +7,7 @@ import RegisterPages from './src/pages/Register';
 import Login from './src/pages/Login';
 import Principal from './src/pages/Principal';
 import RegisterAdmin from './src/pages/RegistroAdmin';
+import EditarUsuario from './src/pages/editarUsuario';
 
 const Stack = createStackNavigator();
 
@@ -15,7 +16,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Bienvenido</Text>
+      <Text style={styles.titulo}>VITA</Text>
       <TouchableOpacity
         style={styles.buttonContainer}
         onPress={() => navigation.navigate('RegisterAdmin')}>
@@ -57,6 +58,11 @@ export default function App() {
         <Stack.Screen 
           name="RegisterAdmin" 
           component={RegisterAdmin} 
+          options={{ headerShown: false }} 
+        />
+         <Stack.Screen 
+          name="EditarUsuario" 
+          component={EditarUsuario} 
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>

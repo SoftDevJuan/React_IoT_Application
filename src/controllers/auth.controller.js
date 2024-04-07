@@ -44,7 +44,6 @@ export const getUsuarioAdmin = async (req, res) => {
 };
 
 
-
 export const register = async (req, res) => {
   const { username, email, emailAdmin, rfid, puerta } = req.body;
   try {
@@ -79,6 +78,76 @@ export const register = async (req, res) => {
   }
 };
 
+export const actualizarUsuario = async (req, res) => {
+  const { username, emailViejo, email, emailAdmin, rfid, puerta } = req.body;
+
+  console.log(`
+    username: ${username} 
+    emailViejo: ${emailViejo}
+    email: ${email}
+    emailAdmin: ${emailAdmin}
+    rfid: ${rfid}
+    puerta ${puerta} 
+  `)
+
+
+
+  try {
+    let updatedUser;
+
+    // Verificar si se proporciona un nuevo valor para la puerta
+    if (puerta !== undefined && puerta !== null && puerta !== "") {
+      
+      updatedUser = await User.findOneAndUpdate(
+        { email: emailViejo },
+        { username: username, email: email, emailAdmin: emailAdmin, rfid: rfid, puerta: puerta },
+        { new: true } // Para obtener el usuario actualizado
+      );
+    } else {
+      // Si no se proporciona un nuevo valor para la puerta, no actualizarla
+      updatedUser = await User.findOneAndUpdate(
+        { email: emailViejo },
+        { username: username, email: email, rfid: rfid },
+        { new: true } // Para obtener el usuario actualizado
+      );
+    }
+
+    // Si el usuario no existe, devuelve un mensaje de error
+    if (!updatedUser) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.json(updatedUser); // Devolver el usuario actualizado
+  } catch (error) {
+    console.error("Error al actualizar usuario:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+
+
+export const borrrarUsuario = async (req, res) => {
+  const { email } = req.params; 
+  try {
+    const deletedUser = await User.findOneAndDelete({ email: email });
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.json({ message: "Usuario eliminado correctamente" });
+  } catch (error) {
+    console.error("Error al eliminar usuario:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+
+
+
+
+
+
 export const registerAdmin = async (req, res) => {
   const { username, email,  password } = req.body;
   try {
@@ -106,7 +175,6 @@ export const registerAdmin = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
-
 
 
 // entramso a la sesion

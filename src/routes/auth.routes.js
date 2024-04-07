@@ -8,6 +8,8 @@ import {
     getUsuarios,
     registerAdmin,
     getUsuarioAdmin,
+    actualizarUsuario,
+    borrrarUsuario,
 } from "../controllers/auth.controller.js";
 
 import { authRequired } from "../middlewares/validateToken.js";
@@ -40,6 +42,11 @@ router.post("/register", register);
 router.post("/registerAdmin", registerAdmin);
 router.get("/getUsuarios", getUsuarios);
 router.get("/getUsuaioAdmin", getUsuarioAdmin);
+router.post('/actualizarUsuario', actualizarUsuario);
+router.delete('/borrrarUsuario/:email', borrrarUsuario );
+
+
+
 router.post("/login", login);
 router.post("/logout", logout);
 router.get("/profile",authRequired , profile );

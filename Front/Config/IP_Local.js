@@ -1,3 +1,3 @@
-const IPADRESS = "192.168.1.19";
+const IPADRESS = "https://react-iot-application.onrender.com/";
 
 export default IPADRESS;

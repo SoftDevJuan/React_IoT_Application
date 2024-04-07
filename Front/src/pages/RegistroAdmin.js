@@ -34,7 +34,7 @@ function RegisterAdmin() {
 
     try {
       const response = await axios.post(
-        `http://${IPADRESS}:3000/api/registerAdmin`,
+        `${IPADRESS}api/registerAdmin`,
         {
           username: username,
           email:email,

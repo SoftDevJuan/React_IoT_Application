@@ -70,6 +70,17 @@ Content-Type: application/json
   
 }
 
+PUT  http://localhost:3000/api/actualizarUsuario HTTP/1.1
+Content-Type: application/json
+
+{
+    
+      "email":"Test10", 
+      ""
+     
+  
+}
+
 
 
 
@@ -102,3 +113,18 @@ GET  http://localhost:3000/api/puertas HTTP/1.1
 GET  http://localhost:3000/api/puertaNumero HTTP/1.1
 
 ### get de puerta con su numero de puerta 
+
+
+DELETE http://localhost:3000/api/borrarUsuario/Test5@test.com 
+
+###
+POST https://react-iot-application.onrender.com/api/login 
+Content-Type: application/json
+
+{
+    
+      "email":"Admin@gmail.com", 
+      "password": "Admin"
+     
+  
+}
