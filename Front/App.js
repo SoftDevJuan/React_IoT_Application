@@ -1,3 +1,10 @@
+
+import { AppRegistry } from 'react-native';
+
+
+AppRegistry.registerComponent('NombreDeLaApp', () => App); // Asegúrate de que 'NombreDeLaApp' sea el mismo que usas en tu proyecto
+
+
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
@@ -91,3 +98,4 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
 });
+
