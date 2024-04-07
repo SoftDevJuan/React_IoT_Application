@@ -1,8 +1,6 @@
 import { mongoose } from "mongoose";
 
-// modelo para el guardado de usarios 
-
- const UserAdminSchema = new mongoose.Schema({
+const UserAdminSchema = new mongoose.Schema({
     username:{
         type: String,
         required: true,

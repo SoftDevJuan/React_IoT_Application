@@ -1,17 +1,17 @@
 import { mongoose } from "mongoose";
 
-// modelo para el guardado de usarios 
-
  const userSchema = new mongoose.Schema({
     username:{
         type: String,
         required: true,
+
     },
     email:{
         type: String,
         required: true,
         trim: true,
         unique: true,
+
     },
     emailAdmin:{
         type: String,
@@ -25,11 +25,11 @@ import { mongoose } from "mongoose";
         unique: true,
 
     }, 
-    puerta :[{ 
-        puerta_id: { type: String } // Campo para almacenar los ID de los RFID
+     puerta :[{ 
+
+        puerta_id: { type: String }
+         
     }]
-        
-    
 
 },{versionKey : false,timestamps: true})
 

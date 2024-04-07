@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import IPADRESS from "../../Controllers/IP_Local";
+import IPADRESS from "../../Config/IP_Local";
 
 function Registros() {
   const [movimientos, setMovimientos] = useState([]);

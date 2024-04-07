@@ -19,7 +19,7 @@ export const getMovimientos = async (req, res) => {
      // Obtener solo los movimientos que tienen el emailAdmin correspondiente
     const movimientos = await movimientosModel.find({ emailAdmin : emailAdmin });
     if (!movimientos || movimientos.length === 0) {
-      return res.status(404).json({ message: "No se encontraron movimientos." });
+      return res.status(200).json([]); // Devuelve un array vacío
     }
     // Mapear los movimientos para devolver solo los campos requeridos
     const mappedMovimientos = movimientos.map(movimiento => ({

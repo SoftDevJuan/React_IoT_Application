@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import IPADRESS from "../../Controllers/IP_Local";
+import IPADRESS from "../../Config/IP_Local";
 
 const Dispositivo = () => {
   const [userEmail, setUserEmail] = useState("");

@@ -1,4 +1,4 @@
-import ComponenteModel  from "../models/Componentes.js";
+import ComponenteModel  from "./Componentes.js";
 
 // Función para obtener un actuador por su ID
 export const getActuadorById = (req, res) => {

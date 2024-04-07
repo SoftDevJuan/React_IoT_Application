@@ -17,7 +17,25 @@ export const getUsuarios = async (req, res) => {
     const usuarios = await User.find({ emailAdmin: emailAdmin });
 
     if (!usuarios || usuarios.length === 0) {
-      return res.status(404).json({ message: "No se encontraron usuarios." });
+      return res.status(200).json([]); // Devuelve un array vacío
+    }
+    res.status(200).json(usuarios);
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    res.status(500).json({ message: "Error interno del servidor." });
+  }
+};
+
+export const getUsuarioAdmin = async (req, res) => {
+  try {
+    
+    const emailAdmin = req.query.emailAdmin; 
+
+    // Obtener solo los usuarios que tienen el emailAdmin correspondiente
+    const usuarios = await UserAdmin.find({ emailAdmin: emailAdmin });
+
+    if (!usuarios || usuarios.length === 0) {
+      return res.status(200).json([]); // Devuelve un array vacío
     }
     res.status(200).json(usuarios);
   } catch (error) {
@@ -27,9 +45,15 @@ export const getUsuarios = async (req, res) => {
 };
 
 
+
 export const register = async (req, res) => {
   const { username, email, emailAdmin, rfid, puerta } = req.body;
   try {
+    // Verificar si ya existe un usuario con el mismo nombre de usuario o correo electrónico
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+    if (existingUser) {
+      return res.status(400).json({ message: "El usuario o correo electrónico ya están registrados" });
+    }
     const newUser = new User({
       username,
       email,
@@ -52,8 +76,7 @@ export const register = async (req, res) => {
     });
   } catch (error) {
     console.error("Error en el registro:", error); // Imprimir el error en la consola del servidor
-    res.status(500).json({ message: "Error interno del servidor" });
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error interno del servidor"+ error.message  });
   }
 };
 

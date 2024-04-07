@@ -7,6 +7,7 @@ import {
     profile,
     getUsuarios,
     registerAdmin,
+    getUsuarioAdmin,
 } from "../controllers/auth.controller.js";
 
 import { authRequired } from "../middlewares/validateToken.js";
@@ -23,7 +24,7 @@ import {
     deleteActuador,
     getAllActuadores,
     getActuadorById,
-} from "../controllers/componentesController.js"
+} from "../NoUsar/componentesController.js"
 
 import {
     crearPuerta,
@@ -38,6 +39,7 @@ const router = Router();
 router.post("/register", register);
 router.post("/registerAdmin", registerAdmin);
 router.get("/getUsuarios", getUsuarios);
+router.get("/getUsuaioAdmin", getUsuarioAdmin);
 router.post("/login", login);
 router.post("/logout", logout);
 router.get("/profile",authRequired , profile );
