@@ -20,11 +20,11 @@ Content-Type: application/json
 
 {
     
-      "username": "Test4",
-      "email":"Test4@gmail.com",
-      "emailAdmin": "Admin2@gmail.com",
-      "rfid": "444-444-444",
-      "puerta": 1
+      "username": "Leonardo",
+      "email":"Leonardo@test.com",
+      "emailAdmin": "Admin@gmail.com",
+      "rfid": "Jdu2928",
+      "puerta": 2
   
 }
 #### usuarios
@@ -40,6 +40,9 @@ Content-Type: application/json
       "puerta": 2
   
 }
+### usuarios 
+GET http://localhost:3000/api/getUsuarios HTTP/1.1
+
 
 ### puertas 
 
@@ -84,22 +87,6 @@ Content-Type: application/json
 
 
 
-### GET DE TODOS LOS COMPONENTES
-GET  http://localhost:3000/api/actuadores HTTP/1.1
-
-### GET DE UN COMPONENTE EN ESPECIFICO CON SU ID
-GET  http://localhost:3000/api/actuadores/660357cd0857750eec6c4113 HTTP/1.1
-
-### ACTUALIZAR UN COMPONENTE CON SU ID
-PUT http://localhost:3000/api/actuadores/65ff85d16bebdfad691d7b9e HTTP/1.1
-
-### ACTUALIZAR UN COMOPONENTE 
-PATCH   http://localhost:3000/api/actuadores/65f88ab4acc47d14279c0980 HTTP/1.1
-
-### ELIMINAR UN COMPONENTE
-DELETE http://localhost:3000/api/actuadores/65f51798d8c4c8fc00d7d716 HTTP/1.1
-
-
 
 # PUERTAS 
 ### actualizar puerta 
@@ -128,3 +115,6 @@ Content-Type: application/json
      
   
 }
+
+### Movimientos 
+DELETE http://localhost:3000/api/
