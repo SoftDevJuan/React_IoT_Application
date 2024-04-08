@@ -1,4 +1,5 @@
 import MOVIMIENTOS from "../models/movimientos.model.js";
+import Usuarios from "../models/user.model.js"
 import movimientosModel from "../models/movimientos.model.js";
 
 export const Movimientos  = async (req, res) => {
@@ -12,23 +13,44 @@ export const Movimientos  = async (req, res) => {
 
 export const getMovimientos = async (req, res) => {
   try {
-    const emailAdmin = req.query.emailAdmin; // Acceder al parámetro emailAdmin a través de req.query
-    
-    // const movimientos = await movimientosModel.find().sort({ createdAt: -1 }).limit(10);
-     // Obtener solo los movimientos que tienen el emailAdmin correspondiente
+    const emailAdmin = req.query.emailAdmin; 
     const movimientos = await movimientosModel.find({ emailAdmin : emailAdmin });
+
     if (!movimientos || movimientos.length === 0) {
       return res.status(200).json([]); // Devuelve un array vacío
     }
-    // res.status(200).json(movimientos);
-    // Mapear los movimientos para devolver solo los campos requeridos
-    const mappedMovimientos = movimientos.map(movimiento => ({
-      username: movimiento.username,
-      fecha: movimiento.fecha,
-      puerta: movimiento.puerta
-    }));
     
-    res.status(200).json(mappedMovimientos);
+
+    // Mapear los movimientos para devolver solo los campos requeridos
+    const mappedMovimientos = await Promise.all(movimientos.map(async (movimiento) => {
+     
+      const usuario = await Usuarios.findOne({ rfid: movimiento.rfid }).exec();
+
+      if (!usuario) {
+        return null; // Si no se encuentra un usuario, devuelve null
+      }
+
+      // Comparar el rfid y el username del movimiento con los del usuario
+      const rfidMovimiento = movimiento.rfid.toString(); 
+      const rfidUsuario = usuario.rfid.toString(); 
+      const usernameMovimiento = movimiento.username.toString(); 
+      const usernameUsuario = usuario.username.toString(); 
+      
+      if (rfidMovimiento === rfidUsuario && usernameMovimiento === usernameUsuario) {
+       
+          return {
+            username: usuario.username,
+            fecha: movimiento.fecha,
+            puerta: movimiento.puerta
+          };
+        } else {
+          return null; 
+        }
+    }));
+    // Filtrar los movimientos que tienen usuario encontrado
+    const filteredMovimientos = mappedMovimientos.filter(movimiento => movimiento !== null);
+
+    res.status(200).json(filteredMovimientos);
   } catch (error) {
     console.error("Error al obtener movimientos:", error);
     res.status(500).json({ message: "Error interno del servidor." });
