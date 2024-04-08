@@ -2,6 +2,7 @@ import Router from "express";
 import registrosRFID from '../models/registrosRFID.js';
 import Puerta from '../models/puerta.js';
 import usuario from '../models/user.model.js';
+import movimientos from '../models/movimientos.model.js';
 const router = Router();
 
 
@@ -12,15 +13,64 @@ const router = Router();
 /////////////////////////////////////////////////// POST //////////////////////////////////////////////////////////
 // esta direccion es para registrar los intentos de acceso con la tarjeta RFID
 
-export const registrarIntento = (req, res) => {
-    const registrosRFIDModel = registrosRFID(req.body);
-    registrosRFIDModel
-    .save()
-    .then((registrosRFID) => res.json(registrosRFID))
-    .catch((error) => res.json({message:error}));
+export const registrarIntento = async (req, res) => {
+  try {
+    
+   
+    const registro = req.body; // Crea una instancia del modelo registrosRFID con los datos del cuerpo de la solicitud
+    //await registro.save(); // Guarda el registro en la base de datos
+    
+    // Busca un usuario que tenga el RFID del nuevo registro
+    const usuarioEncontrado = await usuario.findOne({ rfid: registro.rfidnumber }).exec();
+    console.log(registro.rfidnumber)
+    // Inicializa los campos del usuario para el movimiento
+    let username = "Desconocido";
+    let email = "Desconocido";
+    let emailAdmin = "Desconocido";
 
+    // Si se encuentra un usuario asociado al RFID, actualiza los campos
+    if (usuarioEncontrado) {
+      console.log("se encontro a: ", usuarioEncontrado.username);
+      username = usuarioEncontrado.username;
+      email = usuarioEncontrado.email;
+      emailAdmin = usuarioEncontrado.emailAdmin;
+    }else{
+      console.log("no se encontro usuario");
+    }
+     
+    const nuevaPuerta= new Puerta(req.body);
+    const puertaEncontrada = await Puerta.findOne({idPuerta : nuevaPuerta.idPuerta});
+
+    if(!puertaEncontrada){
+      console.log("no se encontro la puerta");
+      //res.status(200).json({ "mensaje" : "no se encontro la puerta" });
+
+    }
+    // Crea un nuevo movimiento con los datos obtenidos
+    const movimiento = new movimientos({
+      username,
+      email,
+      emailAdmin,
+      rfid: registro.rfidnumber, // Utiliza el RFID del registro RFID
+      puerta: puertaEncontrada.numero // Este es un ejemplo de otro campo del movimiento
+    });
+
+    // Guarda el nuevo movimiento en la base de datos
+    await movimiento.save();
+
+    const registrosRFIDModel = new registrosRFID(req.body);
+    const registroGuardado = await registrosRFIDModel.save();
+
+
+    
+
+    // Responde con el nuevo registro RFID
+    res.json(registro);
+  } catch (error) {
+    // Maneja cualquier error que ocurra durante el proceso
+    res.status(500).json({ message: error.message });
+  }
 };
-
 
 
 //////////////////////////////////////// GET ///////////////////////////////////////////////////////////////////////////////////////
