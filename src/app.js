@@ -8,7 +8,7 @@ import cors from 'cors'
 const app = express();
 
 
-//app.use(cors()); // para permitir comunicar todos los dominios con el mismo servidor 
+//app.use(cors()); // para permitir comunicar todos los dominios con el mismo server
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
