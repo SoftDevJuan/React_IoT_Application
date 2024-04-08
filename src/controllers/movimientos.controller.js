@@ -13,41 +13,42 @@ export const Movimientos  = async (req, res) => {
 
 export const getMovimientos = async (req, res) => {
   try {
-    const emailAdmin = req.query.emailAdmin; 
-    const movimientos = await movimientosModel.find({ emailAdmin : emailAdmin });
+    const email = req.query.emailAdmin; 
+    const movimientos = await movimientosModel.find({ emailAdmin: email });
+    console.log(email);
 
     if (!movimientos || movimientos.length === 0) {
-      return res.status(200).json([]); // Devuelve un array vacío
+      console.log("No se encontraron movimientos");
+      return res.status(200).json([{ mensaje: "No hay movimientos disponibles" }]);
     }
-    
-
-    // Mapear los movimientos para devolver solo los campos requeridos
+  
     const mappedMovimientos = await Promise.all(movimientos.map(async (movimiento) => {
-     
       const usuario = await Usuarios.findOne({ rfid: movimiento.rfid }).exec();
+      console.log(movimiento.rfid)
 
       if (!usuario) {
-        return null; // Si no se encuentra un usuario, devuelve null
+        return null;
       }
 
-      // Comparar el rfid y el username del movimiento con los del usuario
       const rfidMovimiento = movimiento.rfid.toString(); 
       const rfidUsuario = usuario.rfid.toString(); 
       const usernameMovimiento = movimiento.username.toString(); 
       const usernameUsuario = usuario.username.toString(); 
+
+      console.log(rfidMovimiento, " = ", rfidUsuario);
+      console.log(usernameMovimiento, " = ", usernameUsuario);
       
       if (rfidMovimiento === rfidUsuario && usernameMovimiento === usernameUsuario) {
-       
-          return {
-            username: usuario.username,
-            fecha: movimiento.fecha,
-            puerta: movimiento.puerta
-          };
-        } else {
-          return null; 
-        }
+        return {
+          username: usuario.username,
+          fecha: movimiento.fecha,
+          puerta: movimiento.puerta
+        };
+      } else {
+        return null; 
+      }
     }));
-    // Filtrar los movimientos que tienen usuario encontrado
+
     const filteredMovimientos = mappedMovimientos.filter(movimiento => movimiento !== null);
 
     res.status(200).json(filteredMovimientos);
