@@ -19,7 +19,7 @@ export const registrarIntento = async (req, res) => {
    
     const registro = req.body; // Crea una instancia del modelo registrosRFID con los datos del cuerpo de la solicitud
     //await registro.save(); // Guarda el registro en la base de datos
-    
+    console.log(registro);
     // Busca un usuario que tenga el RFID del nuevo registro
     const usuarioEncontrado = await usuario.findOne({ rfid: registro.rfidnumber }).exec();
     console.log(registro.rfidnumber)
@@ -40,6 +40,7 @@ export const registrarIntento = async (req, res) => {
      
     const nuevaPuerta= new Puerta(req.body);
     const puertaEncontrada = await Puerta.findOne({idPuerta : nuevaPuerta.idPuerta});
+    console.log("sen encontro la puerta: ", nuevaPuerta.idPuerta);
 
     if(!puertaEncontrada){
       console.log("no se encontro la puerta");
@@ -107,18 +108,38 @@ export const consultaPuerta = (req, res) => {
 export const consultarAcceso = async (req, res) => {
   try {
     // Extraer el RFID y el ID de la puerta de los parámetros de la URL
-    const { rfid, gate_id } = req.query;
+    const rfid = req.query.rfid;
+    const gate_id = req.query.gate_id.toString();
+    console.log(rfid, gate_id);
 
     // Buscar en la base de datos si hay un usuario con el RFID proporcionado
-    const usuarioEncontrado = await usuario.findOne({ rfid }).exec(); // Cambiar Usuario a usuario
+    const usuarioEncontrado = await usuario.findOne({ rfid }).exec(); // Cambiar Usuario a Usuario
+    const puertaFound = await Puerta.findOne({idPuerta: gate_id}).exec();
 
     if (usuarioEncontrado) {
       // Verificar si el usuario tiene puertas asignadas
+      console.log(usuarioEncontrado.username);
+
       if (usuarioEncontrado.puerta && usuarioEncontrado.puerta.length > 0) {
         // Si se encuentra un usuario con el RFID proporcionado, verificar si tiene acceso a la puerta con el ID proporcionado
-        const puertaEncontrada = usuarioEncontrado.puerta.find(puerta => puerta.puerta_id === gate_id);
+        console.log(usuarioEncontrado.puerta);
+        let tieneAcceso = false;
 
-        if (puertaEncontrada) {
+
+    if(puertaFound){
+    for (const puertaq of usuarioEncontrado.puerta) {
+      console.log("asi esta el pedo:", puertaq.puerta_id , puertaFound.numero );
+      const stringArray = puertaq.puerta_id.toString();
+      const stringPfound = puertaFound.numero.toString();
+      if (stringArray === stringPfound) {
+          tieneAcceso = true;
+        break;
+          }
+        }}
+        // Utiliza Array.some() para verificar si hay alguna puerta con el ID proporcionado
+       
+
+        if (tieneAcceso) {
           // Si se encuentra una coincidencia, el usuario tiene acceso a la puerta
           res.json({ access: 'Permitido' });
         } else {
