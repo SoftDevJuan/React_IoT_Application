@@ -25,7 +25,7 @@ const puertaSchema = new mongoose.Schema({
         type: String
     },
     usuarios: [{ 
-        rfid_id: { type: String }
+        email: { type: String }
     }]
    
    

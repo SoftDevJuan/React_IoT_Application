@@ -35,6 +35,13 @@ function RegisterPuerta() {
   }, []);
 
   const handleRegister = async () => {
+    console.log("Datos a enviar al servidor:", {
+      numero: numero,
+      idPuerta: idPuerta,
+      emailAdmin: userEmail,
+      usuarios: usuarios 
+     
+    });
 
     try {
       const response = await axios.post(
@@ -66,15 +73,28 @@ function RegisterPuerta() {
 
     } catch (error) {
       console.error("Error al enviar datos al servidor:", error.message);
-      Alert.alert(
-        "Error de registro",
-        "Hubo un problema al registrar la Puerta. Por favor, intenta nuevamente."
-      );
+      if (error.response && error.response.data && error.response.data.message) {
+        // Si hay un mensaje de error personalizado en la respuesta del servidor, muestra ese mensaje
+        Alert.alert(
+          "Error de registro",
+          error.response.data.message
+        );
+      } else {
+        // Si no hay un mensaje de error personalizado, muestra un mensaje genérico
+        Alert.alert(
+          "Error de registro",
+          "Hubo un problema al registrar la Puerta. Por favor, intenta nuevamente."
+        );
+      }
+      console.log(usuarios)
+      setUsuarios([]);
     }
+    // Vaciar setNuevoUsuario en caso de error
+    setUsuarios([]);
   };
 
   const agregarUsuario = () => {
-    setUsuarios([...usuarios, { rfid_id: nuevoUsuario }]);
+    setUsuarios([...usuarios, { email: nuevoUsuario, emailAdmin: userEmail }]);
     setNuevoUsuario("");
     
   };
@@ -95,7 +115,7 @@ function RegisterPuerta() {
           style={styles.input}
           placeholder="ID de la Puerta"
           onChangeText={setIdPuerta}
-          keyboardType="numeric"
+          keyboardType="default"
           value={idPuerta}
           // value={"gate_oo1"}
         />
@@ -106,6 +126,7 @@ function RegisterPuerta() {
           style={styles.input}
           placeholder="Usuarios Permitidos"
           onChangeText={setNuevoUsuario}
+          keyboardType="email-address"
           value={nuevoUsuario}
         />
         {/* Botón para agregar el nuevo usuario */}
