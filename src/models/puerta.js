@@ -8,7 +8,7 @@ const puertaSchema = new mongoose.Schema({
         type: String   
     },
     idPuerta:{
-        type: Number
+        type: String
     },
     status :{
         type: Boolean
@@ -23,7 +23,7 @@ const puertaSchema = new mongoose.Schema({
         type: String
     },
     usuarios: [{ 
-        rfid_id: { type: String }
+        email: { type: String }
     }]
    
    

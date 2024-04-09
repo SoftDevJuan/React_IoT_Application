@@ -61,7 +61,7 @@ function EditarPuerta({route}) {
   const handleEdit = async () => {
 
       // Convertir usuariosPuerta a un arreglo de objetos antes de enviarlo al servidor
-      const usuariosArray = usuariosPuerta.map(usuario => ({ rfid_id: usuario.rfid_id }));
+      const usuariosArray = usuariosPuerta.map(usuario => ({ email: usuario.email, emailAdmin: usuario.emailAdmin }));
 
     try {
       const response = await axios.put(
@@ -71,8 +71,8 @@ function EditarPuerta({route}) {
             numeroPuerta: numeroPuertaInput,
             idPuerta: idPuerta,
             emailAdmin: userEmail,
-            usuarios:usuariosArray
-          }
+            usuarios: usuariosArray.map(usuario => ({ email: usuario.email, emailAdmin: usuario.emailAdmin }))
+  }
          
       );
             
@@ -103,19 +103,53 @@ function EditarPuerta({route}) {
       
     } catch (error) {
       console.error("Error al enviar datos al servidor:", error.message);
-      Alert.alert(
-        "Error de Actualizacion"
-      );
+      if (error.response && error.response.data && error.response.data.message) {
+        // Si hay un mensaje de error personalizado en la respuesta del servidor, muestra ese mensaje
+        Alert.alert(
+          "Error de Actualización",
+          error.response.data.message
+        );
+      } else {
+        // Si no hay un mensaje de error personalizado, muestra un mensaje genérico
+        Alert.alert(
+          "Error de Actualización",
+          "Hubo un problema al actualizar la Puerta. Por favor, intenta nuevamente."
+        );
+      }
+      console.log(usuarios)
+      setUsuarios([]);
     }
+    // Vaciar setNuevoUsuario en caso de error
+    setUsuarios([]);
   };
 
   const agregarUsuario = () => {
-    // setUsuariosPuerta([...usuarios, { rfid_id: nuevoUsuario }]);
-    setUsuariosPuerta([...usuariosPuerta, { rfid_id: nuevoUsuario }]);
-    setNuevoUsuario("");
+    // Verificar si el nuevo usuario ya existe en la lista de usuarios
+    const usuarioExistente = usuariosPuerta.find(usuario => usuario.email === nuevoUsuario);
     
-    
+    if (usuarioExistente) {
+      Alert.alert("Error", "El usuario ya existe en la lista.");
+      return;
+    }
+  
+    // Actualizar todos los usuarios existentes agregándoles el campo emailAdmin
+    const usuariosActualizados = usuariosPuerta.map(usuario => ({
+      ...usuario,
+      emailAdmin: userEmail
+    }));
+  
+    // Agregar el nuevo usuario a la lista de usuarios actualizada
+    const nuevoUsuarioConAdmin = { email: nuevoUsuario, emailAdmin: userEmail };
+    const nuevosUsuarios = [...usuariosActualizados, nuevoUsuarioConAdmin];
+    setUsuariosPuerta(nuevosUsuarios);
+    console.log("UsuariosPuerta después de la actualización:", nuevosUsuarios);
+    setNuevoUsuario(""); // Limpiar el campo de entrada después de agregar el usuario
   };
+  
+  
+  
+  
+  
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -143,6 +177,7 @@ function EditarPuerta({route}) {
           style={styles.input}
           placeholder="Usuarios Permitidos"
           onChangeText={setNuevoUsuario}
+          keyboardType="email-address"
           value={nuevoUsuario}
         />
         
