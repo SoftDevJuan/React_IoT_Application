@@ -117,10 +117,10 @@ function EditarPuerta({route}) {
         );
       }
       console.log(usuarios)
-      setUsuarios([]);
+      setUsuariosPuerta([]);
     }
     // Vaciar setNuevoUsuario en caso de error
-    setUsuarios([]);
+    setUsuariosPuerta([]);
   };
 
   const agregarUsuario = () => {
