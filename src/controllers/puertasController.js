@@ -29,6 +29,30 @@ import Usuario from "../models/user.model.js";
     //   .catch((error) => res.json({ message: error }));
   };
 
+  export const getAllPuertasQerry = async (req, res) => {
+    try {
+      const emailAdmin = req.body.emailAdmin||req.querry.emailAdmin  ; 
+      // Obtener solo los usuarios que tienen el emailAdmin correspondiente
+      const puertas = await puertaModel.find({ emailAdmin: emailAdmin });
+      if (!puertas || puertas.length === 0) {
+        return res.status(404).json({ message: "No se encontraron usuarios." });
+      }
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).json(puertas);
+    } catch (error) {
+      console.error("Error al obtener puertas:", error);
+      res.status(500).json({ message: "Error interno del servidor." });
+    }
+    
+    // // Obtener solo los usuarios que tienen el emailAdmin correspondiente
+    // const puerta = await puertaModel.find({ emailAdmin: emailAdmin });
+    // .then((puerta) => {
+    //     res.setHeader('Content-Type', 'application/json');
+    //     res.json(puerta);
+    //   })
+    //   .catch((error) => res.json({ message: error }));
+  };
+
   
   export const getPuertaByNumero = async (req, res) => {
     try {
@@ -70,7 +94,7 @@ import Usuario from "../models/user.model.js";
   
 
     export const crearPuertaForm = async (req, res) => {
-      const { numero, emailAdmin, idPuerta, usuarios } = req.body;
+      const {  emailAdmin, idPuerta, usuarios, numero } = req.body;
     
       // Verifica si todos los usuarios tienen el mismo emailAdmin que el emailAdmin de la solicitud
       const todosCoinciden = usuarios.every(usuario => {
@@ -115,9 +139,6 @@ import Usuario from "../models/user.model.js";
         });
     };
     
-
-  
-  
     export const updatePuerta = async (req, res) => {
       const { _id, numeroPuerta, emailAdmin, usuarios, idPuerta } = req.body;
     
@@ -180,6 +201,39 @@ import Usuario from "../models/user.model.js";
         res.status(500).json({ message: "Error interno del servidor" });
       }
     };
+    
+
+    export const updatePuertaDispositivo = async (req, res) => {
+      try {
+        // Obtener el ID de la puerta desde los parámetros de la solicitud
+        const { id } = req.params;
+        // Obtener los datos actualizados del cuerpo de la solicitud
+        const { idPuerta, status, acceso, alarma } = req.body;
+    
+        // Buscar la puerta por su ID y actualizar los campos
+        const puertaActualizada = await puertaModel.findByIdAndUpdate(id, {
+          
+          idPuerta,
+          status,
+          acceso,
+          alarma,
+          activacion: "remota",
+          
+        }, { new: true }); // Para devolver el documento actualizado
+    
+        // Si la puerta no existe, devolver un mensaje de error
+        if (!puertaActualizada) {
+          return res.status(404).json({ message: 'Puerta no encontrada' });
+        }
+    
+        // Si la puerta se actualiza correctamente, devolver la puerta actualizada
+        res.json(puertaActualizada);
+      } catch (error) {
+        console.error('Error al actualizar la puerta:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+      }
+    };
+  
     
 
   
