@@ -6,13 +6,14 @@ import Usuario from "../models/user.model.js";
   // Función para obtener todos los actuadores
   export const getAllPuertas = async (req, res) => {
     try {
-      const emailAdmin = req.body.emailAdmin; 
+      const emailAdministrator = req.body.emailAdmin || req.query.emailAdmin;
       // Obtener solo los usuarios que tienen el emailAdmin correspondiente
-      const puertas = await puertaModel.find({ emailAdmin: emailAdmin });
+      const puertas = await puertaModel.find({ emailAdmin: emailAdministrator });
       if (!puertas || puertas.length === 0) {
         return res.status(404).json({ message: "No se encontraron usuarios." });
       }
       res.setHeader('Content-Type', 'application/json');
+     
       res.status(200).json(puertas);
     } catch (error) {
       console.error("Error al obtener puertas:", error);
