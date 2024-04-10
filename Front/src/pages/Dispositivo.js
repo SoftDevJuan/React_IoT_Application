@@ -69,7 +69,7 @@ const Dispositivo = () => {
     valorAlarma,
     valorActivacion
   ) => {
-    let url = `${IPADRESS}api/puertas/${id}`;
+    let url = `${IPADRESS}api/puertasDispositivo/${id}`;
 
     // Crea un objeto para almacenar los campos a actualizar
     let fieldsToUpdate = {};
