@@ -207,12 +207,14 @@ import Usuario from "../models/user.model.js";
       try {
         // Obtener el ID de la puerta desde los parámetros de la solicitud
         const { id } = req.params;
+        console.log(id);
         // Obtener los datos actualizados del cuerpo de la solicitud
-        const { idPuerta, status, acceso, alarma } = req.body;
+        const { idPuerta, status, acceso, alarma, _id } = req.body;
+        
     
         // Buscar la puerta por su ID y actualizar los campos
         const puertaActualizada = await puertaModel.findByIdAndUpdate(id, {
-          
+          _id,
           idPuerta,
           status,
           acceso,
@@ -234,7 +236,38 @@ import Usuario from "../models/user.model.js";
       }
     };
   
+//se copio este metodo para la aplicacion web ya que enviara los datos de manera diferente sin un parametro
+export const updatePuertaDispositivos = async (req, res) => {
+  try {
+    // Obtener el ID de la puerta desde los parámetros de la solicitud
+    //const { id } = req.params;
     
+    // Obtener los datos actualizados del cuerpo de la solicitud
+    const { idPuerta, status, acceso, alarma, _id } = req.body;
+    console.log("la alarma es: ",alarma);
+    // Buscar la puerta por su ID y actualizar los campos
+    const puertaActualizada = await puertaModel.findByIdAndUpdate(_id, {
+      _id,
+      idPuerta,
+      status,
+      acceso,
+      alarma,
+      activacion: "remota",
+      
+    }, { new: true }); // Para devolver el documento actualizado
+
+    // Si la puerta no existe, devolver un mensaje de error
+    if (!puertaActualizada) {
+      return res.status(404).json({ message: 'Puerta no encontrada' });
+    }
+
+    // Si la puerta se actualiza correctamente, devolver la puerta actualizada
+    res.json(puertaActualizada);
+  } catch (error) {
+    console.error('Error al actualizar la puerta:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};    
 
   
 export const borrrarPuerta = async (req, res) => {

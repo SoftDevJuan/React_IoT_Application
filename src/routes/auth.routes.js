@@ -36,7 +36,8 @@ import {
     getAllPuertasQerry,
     getPuertaByNumero,
     updatePuerta,
-    updatePuertaDispositivo
+    updatePuertaDispositivo,
+    updatePuertaDispositivos
 } from "../controllers/puertasController.js"
 
 const router = Router();
@@ -76,6 +77,7 @@ router.post('/puertas', crearPuerta);
 router.post('/puertasForm', crearPuertaForm);
 router.put('/puertas', updatePuerta);
 router.put('/puertasDispositivo/:id', updatePuertaDispositivo);
+router.put('/puertasDispositivos/', updatePuertaDispositivos);
 router.delete('/borrarPuerta/:_id', borrrarPuerta);
 
 
