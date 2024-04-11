@@ -15,6 +15,7 @@ import Usuario from "../models/user.model.js";
       res.setHeader('Content-Type', 'application/json');
      
       res.status(200).json(puertas);
+      console.log(puertas);
     } catch (error) {
       console.error("Error al obtener puertas:", error);
       res.status(500).json({ message: "Error interno del servidor." });
@@ -85,14 +86,27 @@ import Usuario from "../models/user.model.js";
 
   export const crearPuerta = async (req, res) => {
     const componente = puertaModel(req.body);
+
+
+    const nuevaPuerta = new puertaModelo({
+      numero: componente.numero,
+      emailAdmin: componente.emailAdmin,
+      idPuerta: componente.idPuerta,
+      status: "false",
+      acceso: "false",
+      alarma: "false",
+      activacion: "remota",
+      usuarios: componente.usuarios
+    });
+  
     
-    componente.save()
+    nuevaPuerta.save()
       .then((nuevoComponente) => res.json(nuevoComponente))
       .catch((error) => res.json({ message: error }));
   
   };
   
-
+////////////////////////////////////////////////////////////////////////////
     export const crearPuertaForm = async (req, res) => {
       const {  emailAdmin, idPuerta, usuarios, numero } = req.body;
     
@@ -123,10 +137,10 @@ import Usuario from "../models/user.model.js";
         numero: numero,
         emailAdmin: emailAdmin,
         idPuerta: idPuerta,
-        status: false,
-        acceso: false,
-        alarma: false,
-        activacion: "Remota",
+        status: "false",
+        acceso: "false",
+        alarma: "false",
+        activacion: "remota",
         usuarios: usuarios
       });
     

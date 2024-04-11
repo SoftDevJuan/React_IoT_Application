@@ -10,21 +10,28 @@ import { creartoken } from "../libs/jwt.js";
 export const getUsuarios = async (req, res) => {
   try {
     
-    const emailAdmin = req.query.emailAdmin; 
+    const emailAd = req.query.emailAdmin; 
     
-    
+    console.log(emailAd);
     // Obtener solo los usuarios que tienen el emailAdmin correspondiente
-    const usuarios = await User.find({ emailAdmin: emailAdmin });
+    const usuarios = await User.find({ emailAdmin: emailAd });
 
     if (!usuarios || usuarios.length === 0) {
       return res.status(200).json([]); // Devuelve un array vacío
     }
+    usuarios.forEach(usuario => {
+      console.log("usuario: ", usuario.username); // Accede a la propiedad 'username' del usuario
+    });
     res.status(200).json(usuarios);
+    
   } catch (error) {
     console.error("Error al obtener usuarios:", error);
     res.status(500).json({ message: "Error interno del servidor." });
   }
 };
+
+
+
 
 
 export const getUsuarioAdmin = async (req, res) => {
